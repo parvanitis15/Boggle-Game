@@ -98,7 +98,7 @@ bool Node::isValidWord() const
     return m_validWord;
 }
 
-Node* Node::getChildAtIndex(size_t index)
+Node* Node::getChildAtIndex(size_t index) const
 {
     return m_children[index]; // use operator[] (instead of .at()) for better performance
 }

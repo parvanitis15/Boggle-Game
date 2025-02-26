@@ -39,5 +39,10 @@ int main()
 
     Trie trieOfWords{wordsList};
 
+    std::string_view wordTest{"lucifere"};
+    std::cout << "The trie structure " 
+        << ((trieOfWords.contains(wordTest)) ? "contains " : "does not contain ")
+        << "the word " << wordTest << '\n';
+
     return 0;
 }

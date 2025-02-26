@@ -41,7 +41,7 @@ class Node
         std::string getKey() const;
         void setValidWord();
         bool isValidWord() const;
-        Node* getChildAtIndex(size_t index);
+        Node* getChildAtIndex(size_t index) const;
 
         // Function to search for key in children
         // If found, returns child index

@@ -18,7 +18,7 @@
                 "-std=c++23",
                 "main.cpp", "Board.cpp", "Node.cpp", "Trie.cpp",
                 "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+                "${fileDirname}\\main.exe"
             ],
             "options": {
                 "cwd": "${fileDirname}"

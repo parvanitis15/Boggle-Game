@@ -25,17 +25,26 @@ public:
     //  iii)    Iterate over letters:
     //              - Add letter to current word
     //              - Check if the key of the current word belongs to any of the current node's children
-    //                  - Yes: traverse to the child node with the key in question
-    //                  - No: create the child node with the key in question and traverse to it
-    // iv)      Is the word complete?
-    //              - Yes: set node as valid word
-    //              - No: nothing (continue to next letter)
+    //                  - Yes:  traverse to the child node with the key in question
+    //                  - No:   create the child node with the key in question and traverse to it
+    //  iv)      Is the word complete?
+    //              - Yes:  set node as valid word
+    //              - No:   nothing (continue to next letter)
     Trie(const std::vector<std::string_view> &words);
 
-    // Method to add a single word to the trie
+    // Function to add a single word to the trie
     void addWord(std::string_view word);
 
-    bool containsWord(const std::string_view& word) const;
+    // Function to check whether trie contains a certain string
+    // 1. Initialize current node to root node
+    // 2. Initialize word prefix as empty string
+    // 3. Iterate over letters of word:
+    //      i) Add letter to word prefix
+    //      ii) Check if the word prefix matches any children node's keys
+    //          - No:   Return False
+    //          - Yes:  Make that child the current node
+    // 4. Return True
+    bool contains(const std::string_view& word) const;
 };
 
 #endif // TRIE_H

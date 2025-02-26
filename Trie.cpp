@@ -5,7 +5,7 @@
 
 Trie::Trie(const std::vector<std::string_view> &words)
 {
-    for (const auto &word : words)
+    for (const auto& word : words)
     {
         addWord(word);
     }
@@ -16,7 +16,7 @@ void Trie::addWord(std::string_view word)
     Node *current_node_ptr = &m_root;
     std::string current_prefix;
 
-    for (const auto &letter : word)
+    for (const auto& letter : word)
     {
         current_prefix += letter;
 
@@ -39,7 +39,27 @@ void Trie::addWord(std::string_view word)
     current_node_ptr->setValidWord();
 }
 
-// bool Trie::containsWord(const std::string_view& word) const
-// {
-    
-// }
+bool Trie::contains(const std::string_view& word) const
+{
+    const Node* current_node_ptr = &m_root;
+    std::string current_prefix;
+
+    for (const auto& letter : word)
+    {
+        current_prefix += letter;
+
+        // Check if this prefix exists in the children
+        int childIndex = current_node_ptr->getIndexOfChildWithKey(current_prefix);
+
+        if (childIndex < 0) // could be == -1 but wanted to guard against possible conversion of negative int to size_t anyway
+        {
+            return false;
+        }
+        else
+        {
+            current_node_ptr = current_node_ptr->getChildAtIndex(static_cast<size_t>(childIndex));
+        }
+    }
+
+    return true;
+}
