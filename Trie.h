@@ -35,7 +35,7 @@ public:
     // Function to add a single word to the trie
     void addWord(std::string_view word);
 
-    // Function to check whether trie contains a certain string
+    // Function to check whether trie contains a certain string and that is a valid word
     // 1. Initialize current node to root node
     // 2. Initialize word prefix as empty string
     // 3. Iterate over letters of word:
@@ -43,7 +43,7 @@ public:
     //      ii) Check if the word prefix matches any children node's keys
     //          - No:   Return False
     //          - Yes:  Make that child the current node
-    // 4. Return True
+    // 4. Return whether the current node contains a valid word
     bool contains(const std::string_view& word) const;
 };
 

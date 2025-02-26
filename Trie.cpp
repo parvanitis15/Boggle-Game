@@ -61,5 +61,5 @@ bool Trie::contains(const std::string_view& word) const
         }
     }
 
-    return true;
+    return current_node_ptr->isValidWord();
 }
