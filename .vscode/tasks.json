@@ -16,7 +16,7 @@
                 "-Wsign-conversion",
                 "-Werror",
                 "-std=c++23",
-                "${file}",
+                "main.cpp", "Board.cpp", "Node.cpp", "Trie.cpp",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],
