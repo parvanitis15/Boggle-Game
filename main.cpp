@@ -40,10 +40,7 @@ int main()
     Trie trieOfWords{wordsList};
 
     std::string_view wordTest{"ash"};
-    // std::cout << "The trie structure " 
-    //     << ((trieOfWords.contains(wordTest)) ? "contains " : "does not contain ")
-    //     << "the word " << wordTest << '\n';
-    std::cout << "The word " << wordTest << " is " << ((trieOfWords.contains(wordTest)) ? "" : "NOT ")
+    std::cout << "The word '" << wordTest << "' is " << ((trieOfWords.contains(wordTest)) ? "" : "NOT ")
               << "a valid word in the Trie structure." << '\n';
 
     return 0;
