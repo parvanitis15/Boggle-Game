@@ -16,7 +16,7 @@
                 "-Wsign-conversion",
                 "-Werror",
                 "-std=c++23",
-                "main.cpp", "Board.cpp", "Node.cpp", "Trie.cpp", "VisitMap.cpp", "boggle_tester.cpp",
+                "main.cpp", "Board.cpp", "Node.cpp", "Trie.cpp", "VisitMap.cpp", "boggle_algorithm.cpp", "boggle_tester.cpp",
                 "-o",
                 "${fileDirname}\\main.exe"
             ],
