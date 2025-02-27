@@ -16,12 +16,20 @@
                 "-Wsign-conversion",
                 "-Werror",
                 "-std=c++23",
-                "main.cpp", "Board.cpp", "Node.cpp", "Trie.cpp", "VisitMap.cpp", "boggle_algorithm.cpp", "boggle_tester.cpp",
+                "-I${workspaceFolder}/src",
+                "-I${workspaceFolder}/tests",
+                "src/main.cpp",
+                "src/Board.cpp",
+                "src/Node.cpp",
+                "src/Trie.cpp",
+                "src/VisitMap.cpp",
+                "src/boggle_algorithm.cpp",
+                "src/boggle_tester.cpp",
                 "-o",
                 "${fileDirname}\\main.exe"
             ],
             "options": {
-                "cwd": "${fileDirname}"
+                "cwd": "${workspaceFolder}"
             },
             "problemMatcher": [
                 "$gcc"
