@@ -32,10 +32,6 @@ int main()
     // Construct Trie using words
     Trie wordsTrie{wordsList};
 
-    // std::string_view wordTest{"ash"};
-    // std::cout << "The word '" << wordTest << "' is " << ((wordsTrie.contains(wordTest)) ? "" : "NOT ")
-    //           << "a valid word in the Trie structure." << '\n';
-
     // Create a 4x4 Boggle board
     Board board;
     board.rows = 4;
