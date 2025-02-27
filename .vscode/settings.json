@@ -68,6 +68,7 @@
         "typeinfo": "cpp",
         "variant": "cpp",
         "source_location": "cpp",
-        "typeindex": "cpp"
+        "typeindex": "cpp",
+        "unordered_set": "cpp"
     },
 }

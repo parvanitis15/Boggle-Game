@@ -5,6 +5,13 @@
 #include <string_view>
 #include "Node.h"
 
+enum inTrie {
+    doesntExist,
+    existsButNotWord,
+    isWord
+};
+
+
 // Search tree data structure used to store and retrieve strings from a dictionary or set
 // Unlike a binary search tree, nodes in a trie do not store their associated key. Instead, 
 // each node's position within the trie determines its associated key, with the connections
@@ -41,10 +48,10 @@ public:
     // 3. Iterate over letters of word:
     //      i) Add letter to word prefix
     //      ii) Check if the word prefix matches any children node's keys
-    //          - No:   Return False
+    //          - No:   Return doesntExist
     //          - Yes:  Make that child the current node
-    // 4. Return whether the current node contains a valid word
-    bool contains(const std::string_view& word) const;
+    // 4. Return whether the current node contains a valid word (isWord) or not (existsButNotWord)
+    inTrie contains(const std::string_view& word) const;
 };
 
 #endif // TRIE_H
