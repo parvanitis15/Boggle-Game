@@ -37,9 +37,10 @@ add_executable(boggle_solver
     src/boggle_tester.cpp
 )
 
-# Create test executable
+# Create test executables
 add_executable(boggle_tests
     tests/test_boggle.cpp
+    tests/test_boggle_performance.cpp
     src/Board.cpp
     src/Node.cpp
     src/Trie.cpp
