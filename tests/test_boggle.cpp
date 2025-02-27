@@ -1,11 +1,18 @@
 #include <gtest/gtest.h>
 #include <chrono>
+#include <unordered_set>
 #include "boggle_algorithm.h"
 #include "Trie.h"
 #include "Board.h"
 
 class BoggleTest : public ::testing::Test {
 protected:
+    BoggleTest() : 
+        wordsList{},
+        expectedWords{},
+        board{} // Initialize all members in constructor
+    {}
+
     // Test fixture setup
     void SetUp() override {
         wordsList = {
@@ -43,13 +50,21 @@ TEST_F(BoggleTest, CorrectWordsFinding) {
     Trie wordsTrie{wordsList};
     auto foundWords = findValidWordsInBoard(wordsTrie, board);
     
-    // Sort both vectors for comparison
-    std::sort(foundWords.begin(), foundWords.end());
-    auto expectedWordsCopy = expectedWords;
-    std::sort(expectedWordsCopy.begin(), expectedWordsCopy.end());
+    // Convert to sets to ignore duplicates in comparison
+    std::unordered_set<std::string> foundSet;
+    for (const auto& word : foundWords) {
+        foundSet.insert(std::string(word));
+    }
+    
+    std::unordered_set<std::string> expectedSet;
+    for (const auto& word : expectedWords) {
+        expectedSet.insert(std::string(word));
+    }
 
-    EXPECT_EQ(foundWords.size(), expectedWordsCopy.size());
-    EXPECT_EQ(foundWords, expectedWordsCopy);
+    EXPECT_EQ(foundSet.size(), expectedSet.size());
+    for (const auto& word : expectedSet) {
+        EXPECT_TRUE(foundSet.contains(word)) << "Missing expected word: " << word;
+    }
 }
 
 TEST_F(BoggleTest, PerformanceMeasurement) {

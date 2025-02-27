@@ -19,13 +19,14 @@ add_compile_options(
 # Add debug symbols
 set(CMAKE_BUILD_TYPE Debug)
 
-# # Enable testing
-# enable_testing()
+# Enable testing
+enable_testing()
 
-# # Find GTest package
-# find_package(GTest REQUIRED)
+# Find GTest package
+find_package(GTest REQUIRED)
+include(GoogleTest)
 
-# Create executable from your source files
+# Create main executable
 add_executable(boggle_solver
     src/main.cpp
     src/Board.cpp
@@ -36,17 +37,35 @@ add_executable(boggle_solver
     src/boggle_tester.cpp
 )
 
-# Add include directories
-target_include_directories(boggle_solver PRIVATE
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_SOURCE_DIR}/tests
+# Create test executable
+add_executable(boggle_tests
+    tests/test_boggle.cpp
+    src/Board.cpp
+    src/Node.cpp
+    src/Trie.cpp
+    src/VisitMap.cpp
+    src/boggle_algorithm.cpp
 )
 
-# Set output directory to match your current setup
-set_target_properties(boggle_solver
+# Add include directories for both targets
+target_include_directories(boggle_solver PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+)
+
+target_include_directories(boggle_tests PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/tests
+    ${GTEST_INCLUDE_DIRS}
+)
+
+# Link Google Test to the test executable
+target_link_libraries(boggle_tests PRIVATE GTest::GTest GTest::Main)
+
+# Set output directory for both executables
+set_target_properties(boggle_solver boggle_tests
     PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}"
-) 
+)
 
-# # Add the test to CTest
-# add_test(NAME boggle_tests COMMAND boggle_tests)
+# Add the test to CTest
+add_test(NAME boggle_tests COMMAND boggle_tests)
