@@ -1,9 +1,9 @@
 #ifndef NODE_H
 #define NODE_H
 
-#include <vector>
 #include <string>
 #include <string_view>
+#include <vector>
 
 // A Node contains
 //  1) key: a sequence of characters

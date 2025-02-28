@@ -1,6 +1,7 @@
-#include <vector>
-#include <random>
 #include "Board.h"
+
+#include <random>
+#include <vector>
 
 // Returns a random letter from the alphabet
 inline char getRandomLetter(double vowelProbability = 0.35)
@@ -13,7 +14,8 @@ inline char getRandomLetter(double vowelProbability = 0.35)
     static std::uniform_int_distribution<std::size_t> consonantDist(0, consonants.size() - 1);
     static std::uniform_real_distribution<double> vowelChance(0.0, 1.0);
 
-    return (vowelChance(gen) < vowelProbability) ? vowels[vowelDist(gen)] : consonants[consonantDist(gen)];
+    return (vowelChance(gen) < vowelProbability) ? vowels[vowelDist(gen)]
+                                                 : consonants[consonantDist(gen)];
 }
 
 // Creates a Boggle board with compile-time dimensions

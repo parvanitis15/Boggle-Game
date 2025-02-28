@@ -1,12 +1,12 @@
 #ifndef BOGGLE_TESTER_H
 #define BOGGLE_TESTER_H
 
-#include <vector>
+#include <iostream>
 #include <string>
 #include <string_view>
-#include <unordered_set>
 #include <unordered_map>
-#include <iostream>
+#include <unordered_set>
+#include <vector>
 
 // Forward declaration of Board struct for use in function signatures
 struct Board;
@@ -35,9 +35,8 @@ void printWords(const std::vector<std::string> &words);
 std::unordered_map<std::string, int> countWordOccurrences(const std::vector<std::string> &words);
 
 // Verify Boggle results by comparing expected words with found words
-VerificationResult verifyBoggleResults(
-    const std::vector<std::string_view> &expectedWords,
-    const std::vector<std::string> &foundWords);
+VerificationResult verifyBoggleResults(const std::vector<std::string_view> &expectedWords,
+                                       const std::vector<std::string> &foundWords);
 
 // Print detailed verification results
 void printVerificationResults(const VerificationResult &result);

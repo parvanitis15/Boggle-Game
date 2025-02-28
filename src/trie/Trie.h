@@ -1,10 +1,11 @@
 #ifndef TRIE_H
 #define TRIE_H
 
-#include <vector>
-#include <string_view>
-#include <array>
 #include "Node.h"
+
+#include <array>
+#include <string_view>
+#include <vector>
 
 enum inTrie
 {
@@ -17,7 +18,8 @@ enum inTrie
 // Unlike a binary search tree, nodes in a trie do not store their associated key. Instead,
 // each node's position within the trie determines its associated key, with the connections
 // between nodes defined by individual characters rather than the entire key.
-// source: https://en.wikipedia.org/wiki/Trie#:~:text=In%20computer%20science%2C%20a%20trie,from%20a%20dictionary%20or%20set.
+// source:
+// https://en.wikipedia.org/wiki/Trie#:~:text=In%20computer%20science%2C%20a%20trie,from%20a%20dictionary%20or%20set.
 class Trie
 {
 private:
@@ -32,7 +34,8 @@ public:
     //  ii)     Initiate current word to ''
     //  iii)    Iterate over letters:
     //              - Add letter to current word
-    //              - Check if the key of the current word belongs to any of the current node's children
+    //              - Check if the key of the current word belongs to any of the current node's
+    //              children
     //                  - Yes:  traverse to the child node with the key in question
     //                  - No:   create the child node with the key in question and traverse to it
     //  iv)      Is the word complete?

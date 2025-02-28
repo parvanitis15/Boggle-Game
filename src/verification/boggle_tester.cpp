@@ -1,8 +1,9 @@
 #include "boggle_tester.h"
+
 #include "Board.h"
 
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 
 // Print the Boggle board
 void printBoard(const Board &board)
@@ -38,8 +39,7 @@ void printWords(const std::vector<std::string> &words)
 }
 
 // Count occurrences of each word in a list (string version)
-std::unordered_map<std::string, int> countWordOccurrences(
-    const std::vector<std::string> &words)
+std::unordered_map<std::string, int> countWordOccurrences(const std::vector<std::string> &words)
 {
     std::unordered_map<std::string, int> wordCounts;
     for (const auto &word : words)
@@ -50,9 +50,8 @@ std::unordered_map<std::string, int> countWordOccurrences(
 }
 
 // Verify Boggle results by comparing expected words with found words
-VerificationResult verifyBoggleResults(
-    const std::vector<std::string_view> &expectedWords,
-    const std::vector<std::string> &foundWords)
+VerificationResult verifyBoggleResults(const std::vector<std::string_view> &expectedWords,
+                                       const std::vector<std::string> &foundWords)
 {
     VerificationResult result;
     result.allExpectedWordsFound = true;

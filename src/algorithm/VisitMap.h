@@ -1,8 +1,8 @@
 #ifndef VISITMAP_H
 #define VISITMAP_H
 
-#include <vector>
 #include <stdexcept>
+#include <vector>
 
 // Class similar to Board, indicating whether an index in a table (board) has been visited
 class VisitMap
@@ -13,7 +13,8 @@ private:
     size_t columns{0};
 
 public:
-    VisitMap() = delete; // Delete default constructor (and create a modified one which ensures adherence to class invariant)
+    VisitMap() = delete; // Delete default constructor (and create a modified one which ensures
+                         // adherence to class invariant)
 
     // Modified original constructor with validation
     VisitMap(std::vector<bool> truthTable, size_t rows, size_t columns);

@@ -13,7 +13,10 @@ VisitMap::VisitMap(std::vector<bool> truthTable, size_t rows, size_t columns)
     this->columns = columns;
 }
 
-VisitMap::VisitMap(size_t rows, size_t columns) : truthTable(rows * columns, false), rows(rows), columns(columns) {}
+VisitMap::VisitMap(size_t rows, size_t columns)
+    : truthTable(rows * columns, false), rows(rows), columns(columns)
+{
+}
 
 void VisitMap::markVisited(size_t row, size_t col)
 {

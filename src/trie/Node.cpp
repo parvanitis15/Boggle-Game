@@ -1,12 +1,12 @@
 #include "Node.h"
 
 // Constructor from another (parent) Node + letter
-Node::Node(const Node parent, const char letter)
-    : m_key(parent.getKey() + letter) {}
+Node::Node(const Node parent, const char letter) : m_key(parent.getKey() + letter)
+{
+}
 
 // Copy constructor
-Node::Node(const Node &other)
-    : m_key(other.m_key), m_validWord(other.m_validWord)
+Node::Node(const Node &other) : m_key(other.m_key), m_validWord(other.m_validWord)
 {
     // Deep copy children
     for (const auto *child : other.m_children)

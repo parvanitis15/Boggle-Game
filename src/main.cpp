@@ -1,14 +1,14 @@
-#include <iostream>
-#include <vector>
-#include <unordered_map>
-#include <string_view>
-
-#include "boggle_algorithm.h"
-#include "Trie.h"
 #include "Board.h"
+#include "Trie.h"
 #include "VisitMap.h"
+#include "boggle_algorithm.h"
 #include "boggle_tester.h"
 #include "create_boggle_board.h"
+
+#include <iostream>
+#include <string_view>
+#include <unordered_map>
+#include <vector>
 
 int main()
 {
@@ -16,11 +16,11 @@ int main()
 
     // List of words to search for in the Boggle board
     std::vector<std::string_view> wordsList = {
-        "TAPS", "ONE", "RAT", "TONE", "PATS", "RATE", "RATES", "SEAT", "SEA",
-        "SET", "SETS", "TEN", "TENS", "SEND", "SENT", "SEG", "SEAM", "TEAM",
-        "TEAR", "TEARS", "STARE", "STARED", "STAR", "TAR", "TORE", "TEAS",
-        "POEM", "NOTE", "NOTES", "TONES", "PAT", "SAP", "SAPS", "DENS", "DEN",
-        "TEND", "ENDS", "NEAT", "STEM", "MIST", "MATS", "PAST", "PANE"};
+        "TAPS", "ONE",   "RAT",   "TONE",   "PATS", "RATE", "RATES", "SEAT", "SEA",
+        "SET",  "SETS",  "TEN",   "TENS",   "SEND", "SENT", "SEG",   "SEAM", "TEAM",
+        "TEAR", "TEARS", "STARE", "STARED", "STAR", "TAR",  "TORE",  "TEAS", "POEM",
+        "NOTE", "NOTES", "TONES", "PAT",    "SAP",  "SAPS", "DENS",  "DEN",  "TEND",
+        "ENDS", "NEAT",  "STEM",  "MIST",   "MATS", "PAST", "PANE"};
 
     std::cout << "\nWords to find:" << std::endl;
     for (const auto &word : wordsList)
@@ -36,11 +36,7 @@ int main()
     Board board;
     board.rows = 4;
     board.columns = 4;
-    board.table = {
-        'T', 'A', 'P', 'S',
-        'O', 'N', 'E', 'D',
-        'R', 'A', 'T', 'I',
-        'M', 'S', 'E', 'G'};
+    board.table = {'T', 'A', 'P', 'S', 'O', 'N', 'E', 'D', 'R', 'A', 'T', 'I', 'M', 'S', 'E', 'G'};
 
     // Board board = createBoggleBoard<4, 4>();
 
@@ -57,10 +53,9 @@ int main()
 
     // Words that should be found in this board (the expected solution - corrected)
     std::vector<std::string_view> expectedWords = {
-        "DEN", "MATS", "NEAT", "ONE", "PANE", "PAT",
-        "RAT", "RATE", "RATES", "SEA", "SEAM", "SEAT",
-        "SEG", "SENT", "SET", "SETS", "STAR", "TAPS", "TAR",
-        "TEAM", "TEAR", "TEARS", "TEAS", "TEN", "TONE", "TONES"};
+        "DEN", "MATS", "NEAT", "ONE",   "PANE", "PAT", "RAT",  "RATE", "RATES",
+        "SEA", "SEAM", "SEAT", "SEG",   "SENT", "SET", "SETS", "STAR", "TAPS",
+        "TAR", "TEAM", "TEAR", "TEARS", "TEAS", "TEN", "TONE", "TONES"};
 
     // Your Boggle solver implementation would go here
     auto foundWords = findValidWordsInBoard(wordsTrie, board);

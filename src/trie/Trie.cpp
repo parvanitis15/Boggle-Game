@@ -22,7 +22,8 @@ void Trie::addWord(std::string_view word)
         // Check if this prefix exists in the children
         int childIndex = current_node_ptr->getIndexOfChildWithKey(current_prefix);
 
-        if (childIndex < 0) // could be == -1 but wanted to guard against possible conversion of negative int to size_t anyway
+        if (childIndex < 0) // could be == -1 but wanted to guard against possible conversion of
+                            // negative int to size_t anyway
         {
             // Create new node with just the new letter (not the whole prefix)
             Node newNode(*current_node_ptr, letter);
@@ -50,7 +51,8 @@ inTrie Trie::contains(const std::string_view &word) const
         // Check if this prefix exists in the children
         int childIndex = current_node_ptr->getIndexOfChildWithKey(current_prefix);
 
-        if (childIndex < 0) // could be == -1 but wanted to guard against possible conversion of negative int to size_t anyway
+        if (childIndex < 0) // could be == -1 but wanted to guard against possible conversion of
+                            // negative int to size_t anyway
         {
             return inTrie::doesntExist;
         }
