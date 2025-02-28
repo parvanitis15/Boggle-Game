@@ -5,9 +5,17 @@ on:
     tags:
       - 'v*'
 
+# Add permissions at the top level
+permissions:
+  contents: write
+  packages: write
+
 jobs:
   create-release:
     runs-on: ubuntu-latest
+    # You can also set permissions at the job level if needed
+    permissions:
+      contents: write
     outputs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
