@@ -48,7 +48,7 @@ This project uses GitHub Actions for continuous integration and deployment:
 
 1. **CI Workflow**: Builds and tests the code on multiple platforms (Linux, macOS, Windows)
 2. **Code Quality**: Checks code formatting and performs static analysis
-3. **Release**: Creates releases with binaries for multiple platforms when a tag is pushed
+<!-- 3. **Release**: Creates releases with binaries for multiple platforms when a tag is pushed -->
 
 ## Creating a Release
 
