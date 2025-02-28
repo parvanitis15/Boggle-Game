@@ -5,16 +5,27 @@ project(BoggleSolver CXX)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Set compiler flags to match your current settings
-add_compile_options(
-    -pedantic-errors
-    -Wall
-    -Weffc++
-    -Wextra
-    -Wconversion
-    -Wsign-conversion
-    -Werror
-)
+# Set compiler flags based on compiler type
+if(MSVC)
+    # MSVC (Visual Studio) compiler flags
+    add_compile_options(
+        /W4     # Warning level 4
+        /WX     # Treat warnings as errors
+        /EHsc   # Enable C++ exceptions
+        /permissive-  # Enforce standards conformance
+    )
+else()
+    # GCC/Clang compiler flags
+    add_compile_options(
+        -pedantic-errors
+        -Wall
+        -Weffc++
+        -Wextra
+        -Wconversion
+        -Wsign-conversion
+        -Werror
+    )
+endif()
 
 # Add debug symbols
 set(CMAKE_BUILD_TYPE Debug)
