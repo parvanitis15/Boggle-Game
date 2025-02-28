@@ -74,6 +74,8 @@ TEST_F(BoggleTest, PerformanceMeasurement)
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
 
     std::cout << "Time taken: " << duration.count() << " microseconds" << std::endl;
+    std::cout << "Found " << foundWords.size() << " words" << std::endl;
+
     // You might want to set a reasonable threshold based on your requirements
     EXPECT_LT(duration.count(), 1000000); // Expect less than 1 second
 }
