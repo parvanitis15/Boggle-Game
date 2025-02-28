@@ -29,32 +29,40 @@ include(GoogleTest)
 # Create main executable
 add_executable(boggle_solver
     src/main.cpp
-    src/Board.cpp
-    src/Node.cpp
-    src/Trie.cpp
-    src/VisitMap.cpp
-    src/boggle_algorithm.cpp
-    src/boggle_tester.cpp
+    src/board/Board.cpp
+    src/trie/Node.cpp
+    src/trie/Trie.cpp
+    src/algorithm/VisitMap.cpp
+    src/algorithm/boggle_algorithm.cpp
+    src/verification/boggle_tester.cpp
 )
 
 # Create test executables
 add_executable(boggle_tests
     tests/test_boggle.cpp
     tests/test_boggle_performance.cpp
-    src/Board.cpp
-    src/Node.cpp
-    src/Trie.cpp
-    src/VisitMap.cpp
-    src/boggle_algorithm.cpp
+    src/board/Board.cpp
+    src/trie/Node.cpp
+    src/trie/Trie.cpp
+    src/algorithm/VisitMap.cpp
+    src/algorithm/boggle_algorithm.cpp
 )
 
 # Add include directories for both targets
 target_include_directories(boggle_solver PRIVATE
     ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/src/board
+    ${CMAKE_SOURCE_DIR}/src/trie
+    ${CMAKE_SOURCE_DIR}/src/algorithm
+    ${CMAKE_SOURCE_DIR}/src/verification
 )
 
 target_include_directories(boggle_tests PRIVATE
     ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/src/board
+    ${CMAKE_SOURCE_DIR}/src/trie
+    ${CMAKE_SOURCE_DIR}/src/algorithm
+    ${CMAKE_SOURCE_DIR}/src/verification
     ${CMAKE_SOURCE_DIR}/tests
     ${GTEST_INCLUDE_DIRS}
 )
