@@ -1,7 +1,7 @@
 #include "Node.h"
 
 // Constructor from another (parent) Node + letter
-Node::Node(const Node parent, const char letter) : m_key(parent.getKey() + letter)
+Node::Node(const Node& parent, const char letter) : m_key(parent.getKey() + letter)
 {
 }
 

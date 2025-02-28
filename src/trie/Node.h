@@ -21,7 +21,7 @@ public:
     Node() = default;
 
     // Constructor from another (parent) Node + letter
-    Node(const Node parent, const char letter);
+    Node(const Node& parent, const char letter);
 
     // Copy constructor
     Node(const Node &other);

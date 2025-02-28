@@ -41,11 +41,11 @@ public:
     //  iv)      Is the word complete?
     //              - Yes:  set node as valid word
     //              - No:   nothing (continue to next letter)
-    Trie(const std::vector<std::string_view> &words);
+    explicit Trie(const std::vector<std::string_view> &words);
 
     // New array constructor
     template <size_t N>
-    Trie(const std::array<std::string_view, N> &words)
+    explicit Trie(const std::array<std::string_view, N> &words)
     {
         for (const auto &word : words)
         {

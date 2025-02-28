@@ -1,6 +1,6 @@
 #include "VisitMap.h"
 
-VisitMap::VisitMap(std::vector<bool> truthTable, size_t rows, size_t columns)
+VisitMap::VisitMap(const std::vector<bool>& truthTable, size_t rows, size_t columns)
 {
     // Validate dimensions
     if (truthTable.size() != rows * columns)

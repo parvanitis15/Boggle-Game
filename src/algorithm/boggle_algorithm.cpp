@@ -19,7 +19,7 @@
 // };
 
 ContinueTraversing checkBoardIndex(const Trie &wordsTrie, const Board &board, VisitMap &visitMap,
-                                   std::string &currentWord, int r, int c,
+                                   const std::string &currentWord, int r, int c,
                                    std::vector<std::string> &wordsFound)
 {
     // Check bounds

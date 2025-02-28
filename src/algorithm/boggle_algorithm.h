@@ -17,7 +17,7 @@ enum ContinueTraversing
 // Function to check whether a board index letter, appended to current word, exists (and is a word)
 // in the words Trie It also checks whether it has been visited before
 ContinueTraversing checkBoardIndex(const Trie &wordsTrie, const Board &board, VisitMap &visitMap,
-                                   std::string &currentWord, int r, int c,
+                                   const std::string &currentWord, int r, int c,
                                    std::vector<std::string> &wordsFound);
 
 // Recursion function to traverse adjacent index in board
