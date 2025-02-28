@@ -1,0 +1,113 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+  build-and-release:
+    needs: create-release
+    name: Build and Release ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            install_cmd: |
+              sudo apt-get update
+              sudo apt-get install -y build-essential cmake
+              sudo apt-get install -y libgtest-dev
+              cd /usr/src/gtest
+              sudo cmake CMakeLists.txt
+              sudo make
+              sudo cp lib/*.a /usr/lib
+              cd ${GITHUB_WORKSPACE}
+            artifact_name: boggle_solver-linux
+            asset_name: boggle_solver-linux
+          - os: macos-latest
+            install_cmd: |
+              brew install cmake
+              brew install googletest
+            artifact_name: boggle_solver-macos
+            asset_name: boggle_solver-macos
+          - os: windows-latest
+            install_cmd: |
+              choco install cmake
+              git clone https://github.com/microsoft/vcpkg.git
+              cd vcpkg
+              ./bootstrap-vcpkg.bat
+              ./vcpkg install gtest
+              cd ..
+            cmake_flags: -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
+            artifact_name: boggle_solver-windows
+            asset_name: boggle_solver-windows.exe
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cache/pip
+          ~/.conan
+          ${{ runner.workspace }}/build/_deps
+          ${{ env.VCPKG_ROOT }}/installed
+        key: ${{ matrix.os }}-deps-${{ hashFiles('**/CMakeLists.txt') }}
+        restore-keys: |
+          ${{ matrix.os }}-deps-
+
+    - name: Install dependencies
+      run: ${{ matrix.install_cmd }}
+
+    - name: Create Build Directory
+      run: mkdir -p build
+
+    - name: Configure CMake
+      run: cmake -B build -DCMAKE_BUILD_TYPE=Release ${{ matrix.cmake_flags }}
+
+    - name: Build
+      run: cmake --build build --config Release
+
+    - name: Run Tests
+      working-directory: build
+      run: ctest --output-on-failure -C Release
+
+    - name: Package Application
+      run: |
+        mkdir -p package
+        if [ "${{ matrix.os }}" == "windows-latest" ]; then
+          cp build/Release/boggle_solver.exe package/${{ matrix.asset_name }}
+        else
+          cp build/boggle_solver package/${{ matrix.asset_name }}
+        fi
+      shell: bash
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.create-release.outputs.upload_url }}
+        asset_path: ./package/${{ matrix.asset_name }}
+        asset_name: ${{ matrix.asset_name }}
+        asset_content_type: application/octet-stream 
