@@ -16,8 +16,7 @@ constexpr std::array<std::string_view, 101> WORD_LIST = {
     "WAY", "EVEN", "NEW", "WANT", "ANY", "THESE", "GIVE", "DAY", "MOST",
     "PLAY", "GAME", "TEAM", "WORD", "TEST", "FIND", "MANY", "MUST", "STILL",
     "LIFE", "KNOW", "SAME", "TAKE", "PART", "REAL", "CARE", "MOVE", "FACT",
-    "BOOK", "STAR", "HAND", "HERE", "KIND", "NEED", "HOME", "GROW", "FOOD"
-};
+    "BOOK", "STAR", "HAND", "HERE", "KIND", "NEED", "HOME", "GROW", "FOOD"};
 
 // Extended array of common English words (3-8 letters) for performance testing
 constexpr std::array<std::string_view, 1000> EXTENDED_WORD_LIST = {
@@ -87,8 +86,6 @@ constexpr std::array<std::string_view, 1000> EXTENDED_WORD_LIST = {
     "WAVE", "WAYS", "WEAK", "WEAR", "WEEK", "WELL", "WENT", "WERE", "WEST",
     "WHAT", "WHEN", "WHOM", "WIDE", "WIFE", "WILD", "WILL", "WIND", "WINE",
     "WING", "WIRE", "WISE", "WISH", "WITH", "WOOD", "WORD", "WORE", "WORK",
-    "YARD", "YEAH", "YEAR", "YOUR", "ZERO", "ZONE"
-};
+    "YARD", "YEAH", "YEAR", "YOUR", "ZERO", "ZONE"};
 
-
-#endif // WORD_LIST_H 
+#endif // WORD_LIST_H

@@ -11,49 +11,49 @@
 //  3) children: a vector of pointers to children nodes
 class Node
 {
-    private:
-        std::string m_key{};
-        bool m_validWord{false};
-        std::vector<Node*> m_children{};
+private:
+    std::string m_key{};
+    bool m_validWord{false};
+    std::vector<Node *> m_children{};
 
-    public:
-        // Default "empty-root" constructor
-        Node() = default;
+public:
+    // Default "empty-root" constructor
+    Node() = default;
 
-        // Constructor from another (parent) Node + letter
-        Node(const Node parent, const char letter);
+    // Constructor from another (parent) Node + letter
+    Node(const Node parent, const char letter);
 
-        // Copy constructor
-        Node(const Node &other);
+    // Copy constructor
+    Node(const Node &other);
 
-        // Move constructor
-        Node(Node &&other) noexcept;
+    // Move constructor
+    Node(Node &&other) noexcept;
 
-        // Copy assignment operator
-        Node &operator=(const Node &other);
+    // Copy assignment operator
+    Node &operator=(const Node &other);
 
-        // Move assignment operator
-        Node &operator=(Node &&other) noexcept;
+    // Move assignment operator
+    Node &operator=(Node &&other) noexcept;
 
-        // Destructor to clean up resources (children)
-        ~Node();
+    // Destructor to clean up resources (children)
+    ~Node();
 
-        std::string getKey() const;
-        void setValidWord();
-        bool isValidWord() const;
-        Node* getChildAtIndex(size_t index) const;
+    std::string getKey() const;
+    void setValidWord();
+    bool isValidWord() const;
+    Node *getChildAtIndex(size_t index) const;
 
-        // Function to search for key in children
-        // If found, returns child index
-        // If not found, returns -1
-        int getIndexOfChildWithKey(const std::string_view key) const;
+    // Function to search for key in children
+    // If found, returns child index
+    // If not found, returns -1
+    int getIndexOfChildWithKey(const std::string_view key) const;
 
-        // Function to add new child node and return it
-        // Use move semantics for better performance
-        Node* addChildNode(Node&& childNode);
+    // Function to add new child node and return it
+    // Use move semantics for better performance
+    Node *addChildNode(Node &&childNode);
 
-        // Overload to add child node via copy
-        Node* addChildNode(const Node &childNode);
+    // Overload to add child node via copy
+    Node *addChildNode(const Node &childNode);
 };
 
 #endif // NODE_H

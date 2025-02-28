@@ -6,20 +6,21 @@
 #include "Board.h"
 
 // 3x3 Small board
-inline Board createSmallBoard() {
+inline Board createSmallBoard()
+{
     Board board;
     board.rows = 3;
     board.columns = 3;
     board.table = {
         'C', 'A', 'T',
         'R', 'E', 'D',
-        'S', 'I', 'N'
-    };
+        'S', 'I', 'N'};
     return board;
 }
 
 // 4x4 Medium board (standard Boggle size)
-inline Board createMediumBoard() {
+inline Board createMediumBoard()
+{
     Board board;
     board.rows = 4;
     board.columns = 4;
@@ -27,13 +28,13 @@ inline Board createMediumBoard() {
         'T', 'A', 'P', 'S',
         'O', 'N', 'E', 'D',
         'R', 'A', 'T', 'I',
-        'M', 'S', 'E', 'G'
-    };
+        'M', 'S', 'E', 'G'};
     return board;
 }
 
 // 5x5 Large board
-inline Board createLargeBoard() {
+inline Board createLargeBoard()
+{
     Board board;
     board.rows = 5;
     board.columns = 5;
@@ -42,13 +43,13 @@ inline Board createLargeBoard() {
         'H', 'E', 'A', 'R', 'T',
         'S', 'T', 'A', 'R', 'S',
         'P', 'L', 'A', 'N', 'E',
-        'B', 'O', 'A', 'R', 'D'
-    };
+        'B', 'O', 'A', 'R', 'D'};
     return board;
 }
 
 // 6x6 Huge board
-inline Board createHugeBoard() {
+inline Board createHugeBoard()
+{
     Board board;
     board.rows = 6;
     board.columns = 6;
@@ -58,9 +59,8 @@ inline Board createHugeBoard() {
         'O', 'T', 'H', 'E', 'R', 'S',
         'W', 'O', 'R', 'L', 'D', 'S',
         'P', 'L', 'A', 'N', 'E', 'T',
-        'S', 'P', 'A', 'C', 'E', 'S'
-    };
+        'S', 'P', 'A', 'C', 'E', 'S'};
     return board;
 }
 
-#endif // BOGGLE_BOARDS_H 
+#endif // BOGGLE_BOARDS_H

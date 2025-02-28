@@ -3,7 +3,7 @@
 
 #include <vector>
 
-struct Board 
+struct Board
 {
     std::vector<char> table{}; // row-major
     size_t rows{0};

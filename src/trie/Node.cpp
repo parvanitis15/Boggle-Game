@@ -1,7 +1,7 @@
 #include "Node.h"
 
 // Constructor from another (parent) Node + letter
-Node::Node(const Node parent, const char letter) 
+Node::Node(const Node parent, const char letter)
     : m_key(parent.getKey() + letter) {}
 
 // Copy constructor
@@ -93,12 +93,12 @@ void Node::setValidWord()
     m_validWord = true;
 }
 
-bool Node::isValidWord() const 
+bool Node::isValidWord() const
 {
     return m_validWord;
 }
 
-Node* Node::getChildAtIndex(size_t index) const
+Node *Node::getChildAtIndex(size_t index) const
 {
     return m_children[index]; // use operator[] (instead of .at()) for better performance
 }
@@ -115,7 +115,7 @@ int Node::getIndexOfChildWithKey(const std::string_view key) const
     return -1;
 }
 
-Node* Node::addChildNode(Node&& childNode)
+Node *Node::addChildNode(Node &&childNode)
 {
     // Create a new node on the heap, moving resources
     Node *newNode = new Node(std::move(childNode));
@@ -123,7 +123,7 @@ Node* Node::addChildNode(Node&& childNode)
     return newNode;
 }
 
-Node* Node::addChildNode(const Node &childNode)
+Node *Node::addChildNode(const Node &childNode)
 {
     Node *newNode = new Node(childNode);
     m_children.push_back(newNode);

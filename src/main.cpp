@@ -10,22 +10,21 @@
 #include "boggle_tester.h"
 #include "create_boggle_board.h"
 
-
-int main() 
+int main()
 {
     // Test case 1: few valid words, small board
 
     // List of words to search for in the Boggle board
     std::vector<std::string_view> wordsList = {
-        "TAPS", "ONE", "RAT", "TONE", "PATS", "RATE", "RATES", "SEAT", "SEA", 
+        "TAPS", "ONE", "RAT", "TONE", "PATS", "RATE", "RATES", "SEAT", "SEA",
         "SET", "SETS", "TEN", "TENS", "SEND", "SENT", "SEG", "SEAM", "TEAM",
         "TEAR", "TEARS", "STARE", "STARED", "STAR", "TAR", "TORE", "TEAS",
         "POEM", "NOTE", "NOTES", "TONES", "PAT", "SAP", "SAPS", "DENS", "DEN",
-        "TEND", "ENDS", "NEAT", "STEM", "MIST", "MATS", "PAST", "PANE"
-    };
-    
+        "TEND", "ENDS", "NEAT", "STEM", "MIST", "MATS", "PAST", "PANE"};
+
     std::cout << "\nWords to find:" << std::endl;
-    for (const auto& word : wordsList) {
+    for (const auto &word : wordsList)
+    {
         std::cout << word << " ";
     }
     std::cout << std::endl;
@@ -42,13 +41,15 @@ int main()
         'O', 'N', 'E', 'D',
         'R', 'A', 'T', 'I',
         'M', 'S', 'E', 'G'};
-    
+
     // Board board = createBoggleBoard<4, 4>();
 
     // Print the board for visual reference
     std::cout << "Boggle Board:" << std::endl;
-    for (size_t i = 0; i < board.rows; ++i) {
-        for (size_t j = 0; j < board.columns; ++j) {
+    for (size_t i = 0; i < board.rows; ++i)
+    {
+        for (size_t j = 0; j < board.columns; ++j)
+        {
             std::cout << board.getLetter(i, j) << " ";
         }
         std::cout << std::endl;
@@ -66,15 +67,15 @@ int main()
 
     // Print expected solution for reference
     std::cout << "\nExpected solution (words that should be found):" << std::endl;
-    printWords(expectedWords);  // This will use the string_view version of printWords
-    
+    printWords(expectedWords); // This will use the string_view version of printWords
+
     // Validate the results
     std::cout << "\nWords found:" << std::endl;
-    printWords(foundWords);  // This will use the string version of printWords
-    
+    printWords(foundWords); // This will use the string version of printWords
+
     // Run detailed verification
     VerificationResult result = verifyBoggleResults(expectedWords, foundWords);
-    
+
     // Print verification results
     printVerificationResults(result);
 
