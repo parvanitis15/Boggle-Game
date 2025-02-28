@@ -24,7 +24,7 @@ ContinueTraversing checkBoardIndex(const Trie& wordsTrie, const Board& board,
 // while the Trie contains the current word
 // Important: currentWord is a new copy, because we take a path which we do not want to be alter the
 // original word (which also takes other paths) Same with visitMap
-void traverseBoardRecursively(const Trie& wordsTrie, const Board& board, VisitMap visitMap,
+void traverseBoardRecursively(const Trie& wordsTrie, const Board& board, const VisitMap& visitMap,
                               const std::string& currentWord, int rStart, int cStart,
                               std::vector<std::string>& wordsFound);
 

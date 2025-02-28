@@ -64,7 +64,7 @@ ContinueTraversing checkBoardIndex(const Trie& wordsTrie, const Board& board,
     return ContinueTraversing::yes;
 }
 
-void traverseBoardRecursively(const Trie& wordsTrie, const Board& board, VisitMap visitMap,
+void traverseBoardRecursively(const Trie& wordsTrie, const Board& board, const VisitMap& visitMap,
                               const std::string& currentWord, int rStart, int cStart,
                               std::vector<std::string>& wordsFound)
 {
