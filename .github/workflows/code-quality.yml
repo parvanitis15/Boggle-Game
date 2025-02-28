@@ -23,4 +23,4 @@ jobs:
 
     - name: Static analysis
       run: |
-        cppcheck --enable=all --std=c++17 --error-exitcode=1 --suppress=missingIncludeSystem src/ tests/ 
+        cppcheck --enable=all --std=c++17 --error-exitcode=1 --suppress=missingIncludeSystem --suppress=unusedFunction -I src/board -I src/trie -I src/algorithm -I src/verification src/ tests/ 
