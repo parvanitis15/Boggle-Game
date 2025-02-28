@@ -65,7 +65,7 @@ public:
     //          - No:   Return doesntExist
     //          - Yes:  Make that child the current node
     // 4. Return whether the current node contains a valid word (isWord) or not (existsButNotWord)
-    inTrie contains(const std::string_view &word) const;
+    inTrie contains(const std::string_view& word) const;
 };
 
 #endif // TRIE_H
