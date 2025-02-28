@@ -18,9 +18,9 @@
 //     // }
 // };
 
-ContinueTraversing checkBoardIndex(const Trie& wordsTrie, const Board& board, const VisitMap& visitMap,
-                                   const std::string& currentWord, int r, int c,
-                                   std::vector<std::string>& wordsFound)
+ContinueTraversing checkBoardIndex(const Trie& wordsTrie, const Board& board,
+                                   const VisitMap& visitMap, const std::string& currentWord, int r,
+                                   int c, std::vector<std::string>& wordsFound)
 {
     // Check bounds
     if ((r < 0) || (r >= static_cast<int>(board.rows)) || (c < 0) ||
