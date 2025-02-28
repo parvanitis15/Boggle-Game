@@ -65,7 +65,7 @@ jobs:
               ./bootstrap-vcpkg.bat
               ./vcpkg install gtest
               cd ..
-            cmake_flags: -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
+            cmake_flags: -DCMAKE_TOOLCHAIN_FILE="./vcpkg/scripts/buildsystems/vcpkg.cmake"
             artifact_name: boggle_solver-windows
             asset_name: boggle_solver-windows.exe
 
@@ -91,7 +91,16 @@ jobs:
       run: mkdir -p build
 
     - name: Configure CMake
-      run: cmake -B build -DCMAKE_BUILD_TYPE=Release ${{ matrix.cmake_flags }}
+      run: |
+        if [ "${{ matrix.os }}" == "windows-latest" ]; then
+          # On Windows, use absolute path for vcpkg
+          VCPKG_PATH="$GITHUB_WORKSPACE/vcpkg/scripts/buildsystems/vcpkg.cmake"
+          cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="$VCPKG_PATH"
+        else
+          # On Linux/macOS
+          cmake -B build -DCMAKE_BUILD_TYPE=Release ${{ matrix.cmake_flags }}
+        fi
+      shell: bash
 
     - name: Build
       run: cmake --build build --config Release
@@ -104,9 +113,27 @@ jobs:
       run: |
         mkdir -p package
         if [ "${{ matrix.os }}" == "windows-latest" ]; then
-          cp build/Release/boggle_solver.exe package/${{ matrix.asset_name }}
+          # On Windows, try multiple possible locations
+          if [ -f "build/Release/boggle_solver.exe" ]; then
+            cp build/Release/boggle_solver.exe package/${{ matrix.asset_name }}
+          elif [ -f "build/boggle_solver.exe" ]; then
+            cp build/boggle_solver.exe package/${{ matrix.asset_name }}
+          else
+            # List build directory to help debug
+            find build -type f -name "boggle_solver*.exe" -o -name "BoggleSolver*.exe"
+            exit 1
+          fi
         else
-          cp build/boggle_solver package/${{ matrix.asset_name }}
+          # On Linux/macOS, check multiple possible locations
+          if [ -f "build/boggle_solver" ]; then
+            cp build/boggle_solver package/${{ matrix.asset_name }}
+          elif [ -f "build/src/boggle_solver" ]; then
+            cp build/src/boggle_solver package/${{ matrix.asset_name }}
+          else
+            # List build directory to help debug
+            find build -type f -name "boggle_solver*" -o -name "BoggleSolver*"
+            exit 1
+          fi
         fi
       shell: bash
 
