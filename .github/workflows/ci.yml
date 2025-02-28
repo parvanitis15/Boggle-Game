@@ -1,0 +1,88 @@
+name: C++ CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    name: ${{ matrix.os }} Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            install_cmd: |
+              sudo apt-get update
+              sudo apt-get install -y build-essential cmake lcov
+              sudo apt-get install -y libgtest-dev
+              cd /usr/src/gtest
+              sudo cmake CMakeLists.txt
+              sudo make
+              sudo cp lib/*.a /usr/lib
+              cd ${GITHUB_WORKSPACE}
+            cmake_flags: -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="--coverage"
+          - os: macos-latest
+            install_cmd: |
+              brew install cmake lcov
+              brew install googletest
+            cmake_flags: -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="--coverage"
+          - os: windows-latest
+            install_cmd: |
+              choco install cmake
+              # Install Google Test via vcpkg
+              git clone https://github.com/microsoft/vcpkg.git
+              cd vcpkg
+              ./bootstrap-vcpkg.bat
+              ./vcpkg install gtest
+              cd ..
+            cmake_flags: -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cache/pip
+          ~/.conan
+          ${{ runner.workspace }}/build/_deps
+          ${{ env.VCPKG_ROOT }}/installed
+        key: ${{ matrix.os }}-deps-${{ hashFiles('**/CMakeLists.txt') }}
+        restore-keys: |
+          ${{ matrix.os }}-deps-
+
+    - name: Install dependencies
+      run: ${{ matrix.install_cmd }}
+
+    - name: Create Build Directory
+      run: mkdir -p build
+
+    - name: Configure CMake
+      run: cmake -B build ${{ matrix.cmake_flags }}
+
+    - name: Build
+      run: cmake --build build --config Debug
+
+    - name: Run Tests
+      working-directory: build
+      run: ctest --output-on-failure -V -C Debug
+
+    - name: Generate Coverage Report
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        lcov --capture --directory . --output-file coverage.info
+        lcov --remove coverage.info '/usr/*' --output-file coverage.info
+        lcov --list coverage.info
+
+    - name: Upload Coverage Report
+      if: matrix.os == 'ubuntu-latest'
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./coverage.info
+        fail_ci_if_error: false 
