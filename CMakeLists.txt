@@ -81,11 +81,5 @@ target_include_directories(boggle_tests PRIVATE
 # Link Google Test to the test executable
 target_link_libraries(boggle_tests PRIVATE GTest::GTest GTest::Main)
 
-# Set output directory for both executables
-set_target_properties(boggle_solver boggle_tests
-    PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}"
-)
-
 # Add the test to CTest
 add_test(NAME boggle_tests COMMAND boggle_tests)
