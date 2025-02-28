@@ -17,7 +17,7 @@ public:
                          // adherence to class invariant)
 
     // Modified original constructor with validation
-    VisitMap(const std::vector<bool> &truthTable, size_t rows, size_t columns);
+    VisitMap(const std::vector<bool>& truthTable, size_t rows, size_t columns);
 
     // New constructor that initializes truthTable with all false values
     VisitMap(size_t rows, size_t columns);

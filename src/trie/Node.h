@@ -14,7 +14,7 @@ class Node
 private:
     std::string m_key{};
     bool m_validWord{false};
-    std::vector<Node *> m_children{};
+    std::vector<Node*> m_children{};
 
 public:
     // Default "empty-root" constructor
@@ -24,16 +24,16 @@ public:
     Node(const Node& parent, const char letter);
 
     // Copy constructor
-    Node(const Node &other);
+    Node(const Node& other);
 
     // Move constructor
-    Node(Node &&other) noexcept;
+    Node(Node&& other) noexcept;
 
     // Copy assignment operator
-    Node &operator=(const Node &other);
+    Node& operator=(const Node& other);
 
     // Move assignment operator
-    Node &operator=(Node &&other) noexcept;
+    Node& operator=(Node&& other) noexcept;
 
     // Destructor to clean up resources (children)
     ~Node();
@@ -41,7 +41,7 @@ public:
     std::string getKey() const;
     void setValidWord();
     bool isValidWord() const;
-    Node *getChildAtIndex(size_t index) const;
+    Node* getChildAtIndex(size_t index) const;
 
     // Function to search for key in children
     // If found, returns child index
@@ -50,10 +50,10 @@ public:
 
     // Function to add new child node and return it
     // Use move semantics for better performance
-    Node *addChildNode(Node &&childNode);
+    Node* addChildNode(Node&& childNode);
 
     // Overload to add child node via copy
-    Node *addChildNode(const Node &childNode);
+    Node* addChildNode(const Node& childNode);
 };
 
 #endif // NODE_H

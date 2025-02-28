@@ -18,9 +18,9 @@
 //     // }
 // };
 
-ContinueTraversing checkBoardIndex(const Trie &wordsTrie, const Board &board, VisitMap &visitMap,
-                                   const std::string &currentWord, int r, int c,
-                                   std::vector<std::string> &wordsFound)
+ContinueTraversing checkBoardIndex(const Trie& wordsTrie, const Board& board, VisitMap& visitMap,
+                                   const std::string& currentWord, int r, int c,
+                                   std::vector<std::string>& wordsFound)
 {
     // Check bounds
     if ((r < 0) || (r >= static_cast<int>(board.rows)) || (c < 0) ||
@@ -64,9 +64,9 @@ ContinueTraversing checkBoardIndex(const Trie &wordsTrie, const Board &board, Vi
     return ContinueTraversing::yes;
 }
 
-void traverseBoardRecursively(const Trie &wordsTrie, const Board &board, VisitMap visitMap,
+void traverseBoardRecursively(const Trie& wordsTrie, const Board& board, VisitMap visitMap,
                               std::string currentWord, int rStart, int cStart,
-                              std::vector<std::string> &wordsFound)
+                              std::vector<std::string>& wordsFound)
 {
     for (int r{rStart - 1}; r <= rStart + 1; r++)
     {
@@ -94,7 +94,7 @@ void traverseBoardRecursively(const Trie &wordsTrie, const Board &board, VisitMa
     }
 }
 
-std::vector<std::string> findValidWordsInBoard(const Trie &wordsTrie, const Board &board)
+std::vector<std::string> findValidWordsInBoard(const Trie& wordsTrie, const Board& board)
 {
     std::vector<std::string> wordsFound{};
 

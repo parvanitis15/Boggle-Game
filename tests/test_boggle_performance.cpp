@@ -14,8 +14,8 @@ protected:
     using Clock = std::chrono::high_resolution_clock;
     using Duration = std::chrono::microseconds;
 
-    void measurePerformance(const std::string &boardName, const Board &board,
-                            const std::string &listName, const auto &wordList)
+    void measurePerformance(const std::string& boardName, const Board& board,
+                            const std::string& listName, const auto& wordList)
     {
         Trie wordsTrie{wordList};
 

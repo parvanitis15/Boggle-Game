@@ -6,7 +6,7 @@
 #include <iostream>
 
 // Print the Boggle board
-void printBoard(const Board &board)
+void printBoard(const Board& board)
 {
     for (size_t i = 0; i < board.rows; ++i)
     {
@@ -19,9 +19,9 @@ void printBoard(const Board &board)
 }
 
 // Print a list of words (string_view version)
-void printWords(const std::vector<std::string_view> &words)
+void printWords(const std::vector<std::string_view>& words)
 {
-    for (const auto &word : words)
+    for (const auto& word : words)
     {
         std::cout << word << " ";
     }
@@ -29,9 +29,9 @@ void printWords(const std::vector<std::string_view> &words)
 }
 
 // Print a list of words (string version)
-void printWords(const std::vector<std::string> &words)
+void printWords(const std::vector<std::string>& words)
 {
-    for (const auto &word : words)
+    for (const auto& word : words)
     {
         std::cout << word << " ";
     }
@@ -39,10 +39,10 @@ void printWords(const std::vector<std::string> &words)
 }
 
 // Count occurrences of each word in a list (string version)
-std::unordered_map<std::string, int> countWordOccurrences(const std::vector<std::string> &words)
+std::unordered_map<std::string, int> countWordOccurrences(const std::vector<std::string>& words)
 {
     std::unordered_map<std::string, int> wordCounts;
-    for (const auto &word : words)
+    for (const auto& word : words)
     {
         wordCounts[word]++;
     }
@@ -50,8 +50,8 @@ std::unordered_map<std::string, int> countWordOccurrences(const std::vector<std:
 }
 
 // Verify Boggle results by comparing expected words with found words
-VerificationResult verifyBoggleResults(const std::vector<std::string_view> &expectedWords,
-                                       const std::vector<std::string> &foundWords)
+VerificationResult verifyBoggleResults(const std::vector<std::string_view>& expectedWords,
+                                       const std::vector<std::string>& foundWords)
 {
     VerificationResult result;
     result.allExpectedWordsFound = true;
@@ -62,7 +62,7 @@ VerificationResult verifyBoggleResults(const std::vector<std::string_view> &expe
     result.wordCounts = countWordOccurrences(foundWords);
 
     // Check for duplicates
-    for (const auto &[word, count] : result.wordCounts)
+    for (const auto& [word, count] : result.wordCounts)
     {
         if (count > 1)
         {
@@ -73,20 +73,20 @@ VerificationResult verifyBoggleResults(const std::vector<std::string_view> &expe
 
     // Convert expected words to strings and then to a set for easier checking
     std::unordered_set<std::string> expectedWordsSet;
-    for (const auto &word : expectedWords)
+    for (const auto& word : expectedWords)
     {
         expectedWordsSet.insert(std::string(word));
     }
 
     // Convert found words to a set to check coverage
     std::unordered_set<std::string> foundWordsSet;
-    for (const auto &[word, count] : result.wordCounts)
+    for (const auto& [word, count] : result.wordCounts)
     {
         foundWordsSet.insert(word);
     }
 
     // Check missing words
-    for (const auto &word : expectedWordsSet)
+    for (const auto& word : expectedWordsSet)
     {
         if (foundWordsSet.find(word) == foundWordsSet.end())
         {
@@ -96,7 +96,7 @@ VerificationResult verifyBoggleResults(const std::vector<std::string_view> &expe
     }
 
     // Check extra words
-    for (const auto &word : foundWordsSet)
+    for (const auto& word : foundWordsSet)
     {
         if (expectedWordsSet.find(word) == expectedWordsSet.end())
         {
@@ -109,7 +109,7 @@ VerificationResult verifyBoggleResults(const std::vector<std::string_view> &expe
 }
 
 // Print detailed verification results
-void printVerificationResults(const VerificationResult &result)
+void printVerificationResults(const VerificationResult& result)
 {
     std::cout << "\nVerification results:" << std::endl;
 
@@ -117,7 +117,7 @@ void printVerificationResults(const VerificationResult &result)
     if (result.duplicatesFound)
     {
         std::cout << "Words found multiple times:" << std::endl;
-        for (const auto &[word, count] : result.wordCounts)
+        for (const auto& [word, count] : result.wordCounts)
         {
             if (count > 1)
             {
@@ -134,7 +134,7 @@ void printVerificationResults(const VerificationResult &result)
     if (!result.missingWords.empty())
     {
         std::cout << "Missing expected words:" << std::endl;
-        for (const auto &word : result.missingWords)
+        for (const auto& word : result.missingWords)
         {
             std::cout << "  " << word << std::endl;
         }
@@ -144,7 +144,7 @@ void printVerificationResults(const VerificationResult &result)
     if (!result.extraWords.empty())
     {
         std::cout << "Extra words found:" << std::endl;
-        for (const auto &word : result.extraWords)
+        for (const auto& word : result.extraWords)
         {
             std::cout << "  " << word << std::endl;
         }

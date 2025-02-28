@@ -23,7 +23,7 @@ int main()
         "ENDS", "NEAT",  "STEM",  "MIST",   "MATS", "PAST", "PANE"};
 
     std::cout << "\nWords to find:" << std::endl;
-    for (const auto &word : wordsList)
+    for (const auto& word : wordsList)
     {
         std::cout << word << " ";
     }

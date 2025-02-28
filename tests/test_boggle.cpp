@@ -45,19 +45,19 @@ TEST_F(BoggleTest, CorrectWordsFinding)
 
     // Convert to sets to ignore duplicates in comparison
     std::unordered_set<std::string> foundSet;
-    for (const auto &word : foundWords)
+    for (const auto& word : foundWords)
     {
         foundSet.insert(std::string(word));
     }
 
     std::unordered_set<std::string> expectedSet;
-    for (const auto &word : expectedWords)
+    for (const auto& word : expectedWords)
     {
         expectedSet.insert(std::string(word));
     }
 
     EXPECT_EQ(foundSet.size(), expectedSet.size());
-    for (const auto &word : expectedSet)
+    for (const auto& word : expectedSet)
     {
         EXPECT_TRUE(foundSet.contains(word)) << "Missing expected word: " << word;
     }
@@ -78,7 +78,7 @@ TEST_F(BoggleTest, PerformanceMeasurement)
     EXPECT_LT(duration.count(), 1000000); // Expect less than 1 second
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();

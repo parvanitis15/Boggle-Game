@@ -6,10 +6,10 @@ Node::Node(const Node& parent, const char letter) : m_key(parent.getKey() + lett
 }
 
 // Copy constructor
-Node::Node(const Node &other) : m_key(other.m_key), m_validWord(other.m_validWord)
+Node::Node(const Node& other) : m_key(other.m_key), m_validWord(other.m_validWord)
 {
     // Deep copy children
-    for (const auto *child : other.m_children)
+    for (const auto* child : other.m_children)
     {
         if (child)
         {
@@ -19,7 +19,7 @@ Node::Node(const Node &other) : m_key(other.m_key), m_validWord(other.m_validWor
 }
 
 // Move constructor
-Node::Node(Node &&other) noexcept
+Node::Node(Node&& other) noexcept
     : m_key(std::move(other.m_key)),
       m_validWord(other.m_validWord),
       m_children(std::move(other.m_children))
@@ -28,12 +28,12 @@ Node::Node(Node &&other) noexcept
 }
 
 // Copy assignment operator
-Node &Node::operator=(const Node &other)
+Node& Node::operator=(const Node& other)
 {
     if (this != &other)
     {
         // Clean up existing resources
-        for (auto *child : m_children)
+        for (auto* child : m_children)
         {
             delete child;
         }
@@ -43,7 +43,7 @@ Node &Node::operator=(const Node &other)
         m_children.clear();
 
         // Deep copy children
-        for (const auto *child : other.m_children)
+        for (const auto* child : other.m_children)
         {
             if (child)
             {
@@ -55,12 +55,12 @@ Node &Node::operator=(const Node &other)
 }
 
 // Move assignment operator
-Node &Node::operator=(Node &&other) noexcept
+Node& Node::operator=(Node&& other) noexcept
 {
     if (this != &other)
     {
         // Clean up existing resources
-        for (auto *child : m_children)
+        for (auto* child : m_children)
         {
             delete child;
         }
@@ -77,7 +77,7 @@ Node &Node::operator=(Node &&other) noexcept
 // Destructor to clean up resources (children)
 Node::~Node()
 {
-    for (Node *child : m_children)
+    for (Node* child : m_children)
     {
         delete child;
     }
@@ -98,7 +98,7 @@ bool Node::isValidWord() const
     return m_validWord;
 }
 
-Node *Node::getChildAtIndex(size_t index) const
+Node* Node::getChildAtIndex(size_t index) const
 {
     return m_children[index]; // use operator[] (instead of .at()) for better performance
 }
@@ -115,17 +115,17 @@ int Node::getIndexOfChildWithKey(const std::string_view key) const
     return -1;
 }
 
-Node *Node::addChildNode(Node &&childNode)
+Node* Node::addChildNode(Node&& childNode)
 {
     // Create a new node on the heap, moving resources
-    Node *newNode = new Node(std::move(childNode));
+    Node* newNode = new Node(std::move(childNode));
     m_children.push_back(newNode);
     return newNode;
 }
 
-Node *Node::addChildNode(const Node &childNode)
+Node* Node::addChildNode(const Node& childNode)
 {
-    Node *newNode = new Node(childNode);
+    Node* newNode = new Node(childNode);
     m_children.push_back(newNode);
     return newNode;
 }

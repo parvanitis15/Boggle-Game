@@ -2,9 +2,9 @@
 
 #include <string>
 
-Trie::Trie(const std::vector<std::string_view> &words)
+Trie::Trie(const std::vector<std::string_view>& words)
 {
-    for (const auto &word : words)
+    for (const auto& word : words)
     {
         addWord(word);
     }
@@ -12,10 +12,10 @@ Trie::Trie(const std::vector<std::string_view> &words)
 
 void Trie::addWord(std::string_view word)
 {
-    Node *current_node_ptr = &m_root;
+    Node* current_node_ptr = &m_root;
     std::string current_prefix;
 
-    for (const auto &letter : word)
+    for (const auto& letter : word)
     {
         current_prefix += letter;
 
@@ -39,12 +39,12 @@ void Trie::addWord(std::string_view word)
     current_node_ptr->setValidWord();
 }
 
-inTrie Trie::contains(const std::string_view &word) const
+inTrie Trie::contains(const std::string_view& word) const
 {
-    const Node *current_node_ptr = &m_root;
+    const Node* current_node_ptr = &m_root;
     std::string current_prefix;
 
-    for (const auto &letter : word)
+    for (const auto& letter : word)
     {
         current_prefix += letter;
 
