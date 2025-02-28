@@ -8,6 +8,7 @@
 #include "Board.h"
 #include "VisitMap.h"
 #include "boggle_tester.h"
+#include "create_boggle_board.h"
 
 
 int main() 
@@ -41,6 +42,8 @@ int main()
         'O', 'N', 'E', 'D',
         'R', 'A', 'T', 'I',
         'M', 'S', 'E', 'G'};
+    
+    // Board board = createBoggleBoard<4, 4>();
 
     // Print the board for visual reference
     std::cout << "Boggle Board:" << std::endl;
