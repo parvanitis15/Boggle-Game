@@ -14,7 +14,7 @@ protected:
     }
 
     // Test fixture setup
-    void SetUp() override
+    [[maybe_unused]] void SetUp() override
     {
         wordsList = {"TAPS", "ONE",   "RAT",   "TONE",   "PATS", "RATE", "RATES", "SEAT", "SEA",
                      "SET",  "SETS",  "TEN",   "TENS",   "SEND", "SENT", "SEG",   "SEAM", "TEAM",

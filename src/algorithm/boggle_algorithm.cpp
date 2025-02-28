@@ -18,7 +18,7 @@
 //     // }
 // };
 
-ContinueTraversing checkBoardIndex(const Trie& wordsTrie, const Board& board, VisitMap& visitMap,
+ContinueTraversing checkBoardIndex(const Trie& wordsTrie, const Board& board, const VisitMap& visitMap,
                                    const std::string& currentWord, int r, int c,
                                    std::vector<std::string>& wordsFound)
 {
@@ -65,7 +65,7 @@ ContinueTraversing checkBoardIndex(const Trie& wordsTrie, const Board& board, Vi
 }
 
 void traverseBoardRecursively(const Trie& wordsTrie, const Board& board, VisitMap visitMap,
-                              std::string currentWord, int rStart, int cStart,
+                              const std::string& currentWord, int rStart, int cStart,
                               std::vector<std::string>& wordsFound)
 {
     for (int r{rStart - 1}; r <= rStart + 1; r++)

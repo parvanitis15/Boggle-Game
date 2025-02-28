@@ -6,7 +6,7 @@
 #include <iostream>
 
 // Print the Boggle board
-void printBoard(const Board& board)
+[[maybe_unused]] void printBoard(const Board& board)
 {
     for (size_t i = 0; i < board.rows; ++i)
     {
