@@ -5,6 +5,7 @@
 #include "Trie.h"
 #include "VisitMap.h"
 
+#include <stack>
 #include <string>
 #include <vector>
 
@@ -28,7 +29,19 @@ void traverseBoardRecursively(const Trie& wordsTrie, const Board& board, const V
                               const std::string& currentWord, int rStart, int cStart,
                               std::vector<std::string>& wordsFound);
 
-// Main function to find valid words in board (Boggle function)
-std::vector<std::string> findValidWordsInBoard(const Trie& wordsTrie, const Board& board);
+// Helper function to check a position and push new state onto stacks if valid
+void pushNewStateIfValid(const Trie& wordsTrie, const Board& board, const std::string& currentWord,
+                         int r, int c, const VisitMap& visitMap,
+                         std::vector<std::string>& wordsFound, std::stack<int>& rStack,
+                         std::stack<int>& cStack, std::stack<std::string>& currentWordStack,
+                         std::stack<VisitMap>& visitMapStack,
+                         std::stack<size_t>& directionStepsIndexStack);
+
+// Main function to find valid words in board using recursion
+std::vector<std::string> findValidWordsInBoardRecursive(const Trie& wordsTrie, const Board& board);
+
+// Main function to find valid words in board using iteration
+// Use LIFO queues (stacks) for r, c, directionSteps, currentWord, visitMap
+std::vector<std::string> findValidWordsInBoardIterative(const Trie& wordsTrie, const Board& board);
 
 #endif // BOGGLE_ALGORITHM_H
