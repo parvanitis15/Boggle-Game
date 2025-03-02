@@ -9,17 +9,6 @@
 #include <string>
 #include <vector>
 
-// struct ValidWords
-// {
-//     Trie words;
-
-//     // int isValidWord(const std::string& word)
-//     // {
-//     //     // TODO: return 0 if it's a completed word, 1 if it's completed word and leaf, -1 if
-//     it's not valid
-//     // }
-// };
-
 ContinueTraversing checkBoardIndex(const Trie& wordsTrie, const Board& board,
                                    const VisitMap& visitMap, const std::string& currentWord, int r,
                                    int c, std::vector<std::string>& wordsFound)
@@ -59,7 +48,7 @@ ContinueTraversing checkBoardIndex(const Trie& wordsTrie, const Board& board,
     return ContinueTraversing::yes;
 }
 
-void traverseBoardRecursively(const Trie& wordsTrie, const Board& board, const VisitMap& visitMap,
+void traverseBoardRecursively(const Trie& wordsTrie, const Board& board, VisitMap& visitMap,
                               const std::string& currentWord, int rStart, int cStart,
                               std::vector<std::string>& wordsFound)
 {
@@ -71,19 +60,18 @@ void traverseBoardRecursively(const Trie& wordsTrie, const Board& board, const V
                 == ContinueTraversing::yes)
             {
                 // Mark index as visited
-                auto newVisitMap = visitMap;
-                newVisitMap.markVisited(
-                    static_cast<size_t>(r),
-                    static_cast<size_t>(
-                        c)); // static_cast<size_t> is safe as long as the int is not negative and
-                             // we've checked for that in bounds checking
+                visitMap.markVisited(static_cast<size_t>(r), static_cast<size_t>(c));
 
                 // Add the letter to the actual word for continuing traversal
                 auto newCurrentWord{
                     currentWord + board.getLetter(static_cast<size_t>(r), static_cast<size_t>(c))};
 
-                traverseBoardRecursively(wordsTrie, board, newVisitMap, newCurrentWord, r, c,
+                // Recursive call with the same VisitMap
+                traverseBoardRecursively(wordsTrie, board, visitMap, newCurrentWord, r, c,
                                          wordsFound);
+
+                // Unmark the cell after returning from recursion
+                visitMap.unmarkVisited(static_cast<size_t>(r), static_cast<size_t>(c));
             }
         }
     }
@@ -99,8 +87,7 @@ std::vector<std::string> findValidWordsInBoardRecursive(const Trie& wordsTrie, c
     {
         for (int c{0}; c < static_cast<int>(board.columns); c++)
         {
-            // Store indices that have been already traversed in board
-            // Use a VisitMap
+            // Create a single VisitMap for this starting position
             VisitMap visitMap(board.rows, board.columns);
 
             std::string currentWord{}; // Store current word (letters for each traversal)
@@ -112,16 +99,15 @@ std::vector<std::string> findValidWordsInBoardRecursive(const Trie& wordsTrie, c
                 == ContinueTraversing::yes)
             {
                 // Mark index as visited
-                visitMap.markVisited(
-                    static_cast<size_t>(r),
-                    static_cast<size_t>(
-                        c)); // static_cast<size_t> is safe as long as the int is not negative and
-                             // we've checked for that in bounds checking
+                visitMap.markVisited(static_cast<size_t>(r), static_cast<size_t>(c));
 
                 // Add the letter to the actual word for continuing traversal
                 currentWord += board.getLetter(static_cast<size_t>(r), static_cast<size_t>(c));
 
+                // Recursive call with the same VisitMap
                 traverseBoardRecursively(wordsTrie, board, visitMap, currentWord, r, c, wordsFound);
+
+                // No need to unmark here as we're done with this starting position
             }
         }
     }
@@ -131,22 +117,21 @@ std::vector<std::string> findValidWordsInBoardRecursive(const Trie& wordsTrie, c
 
 // Helper function to check a position and push new state onto stack if valid
 void pushNewStateIfValid(const Trie& wordsTrie, const Board& board, const std::string& currentWord,
-                         int r, int c, const VisitMap& visitMap,
-                         std::vector<std::string>& wordsFound, std::stack<SearchState>& stateStack)
+                         int r, int c, VisitMap& visitMap, std::vector<std::string>& wordsFound,
+                         std::stack<SearchState>& stateStack)
 {
     if (checkBoardIndex(wordsTrie, board, visitMap, currentWord, r, c, wordsFound)
         == ContinueTraversing::yes)
     {
         // Mark index as visited
-        auto newVisitMap{visitMap};
-        newVisitMap.markVisited(static_cast<size_t>(r), static_cast<size_t>(c));
+        visitMap.markVisited(static_cast<size_t>(r), static_cast<size_t>(c));
 
         // Add the letter to the actual word for continuing traversal
         auto newCurrentWord{currentWord
                             + board.getLetter(static_cast<size_t>(r), static_cast<size_t>(c))};
 
         // Push new state to stack
-        stateStack.push({r, c, 0, newCurrentWord, newVisitMap});
+        stateStack.push({r, c, 0, newCurrentWord});
     }
 }
 
@@ -174,18 +159,19 @@ std::vector<std::string> findValidWordsInBoardIterative(const Trie& wordsTrie, c
     {
         for (int cInit{0}; cInit < static_cast<int>(board.columns); cInit++)
         {
+            // Create a single VisitMap for this starting position
+            VisitMap visitMap(board.rows, board.columns);
+
             // Skip invalid starting positions
-            VisitMap initialVisitMap(board.rows, board.columns);
             std::string emptyWord{};
-            if (checkBoardIndex(wordsTrie, board, initialVisitMap, emptyWord, rInit, cInit,
-                                wordsFound)
+            if (checkBoardIndex(wordsTrie, board, visitMap, emptyWord, rInit, cInit, wordsFound)
                 != ContinueTraversing::yes)
             {
                 continue;
             }
 
             // Mark initial position as visited
-            initialVisitMap.markVisited(static_cast<size_t>(rInit), static_cast<size_t>(cInit));
+            visitMap.markVisited(static_cast<size_t>(rInit), static_cast<size_t>(cInit));
 
             // Initial letter for the current word
             std::string initialLetter(
@@ -195,7 +181,7 @@ std::vector<std::string> findValidWordsInBoardIterative(const Trie& wordsTrie, c
             std::stack<SearchState> stateStack;
 
             // Push initial state
-            stateStack.push({rInit, cInit, 0, initialLetter, initialVisitMap});
+            stateStack.push({rInit, cInit, 0, initialLetter});
 
             // DFS traversal
             while (!stateStack.empty())
@@ -206,6 +192,10 @@ std::vector<std::string> findValidWordsInBoardIterative(const Trie& wordsTrie, c
                 // If all directions from current cell are explored, backtrack
                 if (currentState.directionIndex >= nDirections)
                 {
+                    // Unmark the current cell before popping
+                    visitMap.unmarkVisited(static_cast<size_t>(currentState.r),
+                                           static_cast<size_t>(currentState.c));
+
                     stateStack.pop();
                     continue;
                 }
@@ -217,7 +207,7 @@ std::vector<std::string> findValidWordsInBoardIterative(const Trie& wordsTrie, c
 
                 // Try to move in the current direction
                 pushNewStateIfValid(wordsTrie, board, currentState.currentWord, newR, newC,
-                                    currentState.visitMap, wordsFound, stateStack);
+                                    visitMap, wordsFound, stateStack);
             }
         }
     }

@@ -24,6 +24,9 @@ public:
 
     void markVisited(size_t row, size_t col);
 
+    // Function to unmark a position as visited
+    void unmarkVisited(size_t row, size_t col);
+
     // Function to get whether a position has been visited
     bool isVisited(size_t row, size_t col) const;
 };

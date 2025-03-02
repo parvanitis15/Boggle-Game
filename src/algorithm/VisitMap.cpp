@@ -23,6 +23,11 @@ void VisitMap::markVisited(size_t row, size_t col)
     truthTable[row * columns + col] = true;
 }
 
+void VisitMap::unmarkVisited(size_t row, size_t col)
+{
+    truthTable[row * columns + col] = false;
+}
+
 bool VisitMap::isVisited(size_t row, size_t col) const
 {
     return truthTable[row * columns + col]; // use operator[] for efficiency, instead of .at()
