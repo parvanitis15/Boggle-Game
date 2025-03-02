@@ -42,17 +42,26 @@ void Trie::addWord(std::string_view word)
 inTrie Trie::contains(const std::string_view& word) const
 {
     const Node* current_node_ptr = &m_root;
-    std::string current_prefix;
 
-    for (const auto& letter : word)
+    // For an empty string, check if the root is a valid word
+    if (word.empty())
     {
-        current_prefix += letter;
+        return current_node_ptr->isValidWord() ? inTrie::isWord : inTrie::existsButNotWord;
+    }
 
-        // Check if this prefix exists in the children
+    // Create a single string_view that we'll update as we go
+    std::string_view current_prefix;
+
+    for (size_t i = 0; i < word.length(); ++i)
+    {
+        // Update our prefix to include the current character
+        // This creates a new string_view but doesn't allocate memory
+        current_prefix = word.substr(0, i + 1);
+
+        // Use the existing method to find the child with this prefix
         int childIndex = current_node_ptr->getIndexOfChildWithKey(current_prefix);
 
-        if (childIndex < 0) // could be == -1 but wanted to guard against possible conversion of
-                            // negative int to size_t anyway
+        if (childIndex < 0)
         {
             return inTrie::doesntExist;
         }
@@ -62,5 +71,5 @@ inTrie Trie::contains(const std::string_view& word) const
         }
     }
 
-    return ((current_node_ptr->isValidWord()) ? inTrie::isWord : inTrie::existsButNotWord);
+    return current_node_ptr->isValidWord() ? inTrie::isWord : inTrie::existsButNotWord;
 }
