@@ -29,19 +29,25 @@ void traverseBoardRecursively(const Trie& wordsTrie, const Board& board, const V
                               const std::string& currentWord, int rStart, int cStart,
                               std::vector<std::string>& wordsFound);
 
-// Helper function to check a position and push new state onto stacks if valid
+// Define the search state structure for the iterative version
+struct SearchState
+{
+    int r, c;
+    size_t directionIndex;
+    std::string currentWord;
+    VisitMap visitMap;
+};
+
+// Helper function to check a position and push new state onto stack if valid
 void pushNewStateIfValid(const Trie& wordsTrie, const Board& board, const std::string& currentWord,
                          int r, int c, const VisitMap& visitMap,
-                         std::vector<std::string>& wordsFound, std::stack<int>& rStack,
-                         std::stack<int>& cStack, std::stack<std::string>& currentWordStack,
-                         std::stack<VisitMap>& visitMapStack,
-                         std::stack<size_t>& directionStepsIndexStack);
+                         std::vector<std::string>& wordsFound, std::stack<SearchState>& stateStack);
 
 // Main function to find valid words in board using recursion
 std::vector<std::string> findValidWordsInBoardRecursive(const Trie& wordsTrie, const Board& board);
 
 // Main function to find valid words in board using iteration
-// Use LIFO queues (stacks) for r, c, directionSteps, currentWord, visitMap
+// Uses a single stack of SearchState objects for efficient traversal
 std::vector<std::string> findValidWordsInBoardIterative(const Trie& wordsTrie, const Board& board);
 
 #endif // BOGGLE_ALGORITHM_H

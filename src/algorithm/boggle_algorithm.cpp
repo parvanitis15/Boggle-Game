@@ -129,15 +129,11 @@ std::vector<std::string> findValidWordsInBoardRecursive(const Trie& wordsTrie, c
     return wordsFound;
 }
 
-// Helper function to check a position and push new state onto stacks if valid
+// Helper function to check a position and push new state onto stack if valid
 void pushNewStateIfValid(const Trie& wordsTrie, const Board& board, const std::string& currentWord,
                          int r, int c, const VisitMap& visitMap,
-                         std::vector<std::string>& wordsFound, std::stack<int>& rStack,
-                         std::stack<int>& cStack, std::stack<std::string>& currentWordStack,
-                         std::stack<VisitMap>& visitMapStack,
-                         std::stack<size_t>& directionStepsIndexStack)
+                         std::vector<std::string>& wordsFound, std::stack<SearchState>& stateStack)
 {
-
     if (checkBoardIndex(wordsTrie, board, visitMap, currentWord, r, c, wordsFound)
         == ContinueTraversing::yes)
     {
@@ -149,12 +145,8 @@ void pushNewStateIfValid(const Trie& wordsTrie, const Board& board, const std::s
         auto newCurrentWord{currentWord
                             + board.getLetter(static_cast<size_t>(r), static_cast<size_t>(c))};
 
-        // Push to stack
-        rStack.emplace(r);
-        cStack.emplace(c);
-        currentWordStack.emplace(newCurrentWord);
-        visitMapStack.emplace(newVisitMap);
-        directionStepsIndexStack.emplace(0);
+        // Push new state to stack
+        stateStack.push({r, c, 0, newCurrentWord, newVisitMap});
     }
 }
 
@@ -199,71 +191,33 @@ std::vector<std::string> findValidWordsInBoardIterative(const Trie& wordsTrie, c
             std::string initialLetter(
                 1, board.getLetter(static_cast<size_t>(rInit), static_cast<size_t>(cInit)));
 
-            // Initialize stacks for DFS traversal
-            std::stack<int> rStack;
-            std::stack<int> cStack;
-            std::stack<size_t> directionStepsIndexStack;
-            std::stack<std::string> currentWordStack;
-            std::stack<VisitMap> visitMapStack;
+            // Initialize a single stack for DFS traversal
+            std::stack<SearchState> stateStack;
 
             // Push initial state
-            rStack.push(rInit);
-            cStack.push(cInit);
-            directionStepsIndexStack.push(0);
-            currentWordStack.push(initialLetter);
-            visitMapStack.push(initialVisitMap);
-
-            // Current state variables (avoid repeated stack access)
-            int r = rInit;
-            int c = cInit;
-            std::string currentWord = initialLetter;
-            VisitMap visitMap = initialVisitMap;
-            bool stateChanged = false;
+            stateStack.push({rInit, cInit, 0, initialLetter, initialVisitMap});
 
             // DFS traversal
-            while (!rStack.empty())
+            while (!stateStack.empty())
             {
-                // Validate stack consistency
-                assert(rStack.size() == cStack.size()
-                       && rStack.size() == directionStepsIndexStack.size()
-                       && rStack.size() == currentWordStack.size()
-                       && rStack.size() == visitMapStack.size());
-
-                // Update current state if needed
-                if (stateChanged)
-                {
-                    r = rStack.top();
-                    c = cStack.top();
-                    currentWord = currentWordStack.top();
-                    visitMap = visitMapStack.top();
-                    stateChanged = false;
-                }
+                // Get current state - use reference to avoid copying
+                SearchState& currentState = stateStack.top();
 
                 // If all directions from current cell are explored, backtrack
-                if (directionStepsIndexStack.top() >= nDirections)
+                if (currentState.directionIndex >= nDirections)
                 {
-                    rStack.pop();
-                    cStack.pop();
-                    directionStepsIndexStack.pop();
-                    currentWordStack.pop();
-                    visitMapStack.pop();
-                    stateChanged = true;
+                    stateStack.pop();
                     continue;
                 }
 
                 // Get next direction to explore
-                size_t dirIndex = directionStepsIndexStack.top()++;
-                int newR = r + directionSteps[dirIndex][0];
-                int newC = c + directionSteps[dirIndex][1];
+                size_t dirIndex = currentState.directionIndex++;
+                int newR = currentState.r + directionSteps[dirIndex][0];
+                int newC = currentState.c + directionSteps[dirIndex][1];
 
                 // Try to move in the current direction
-                size_t stackSizeBefore = rStack.size();
-                pushNewStateIfValid(wordsTrie, board, currentWord, newR, newC, visitMap, wordsFound,
-                                    rStack, cStack, currentWordStack, visitMapStack,
-                                    directionStepsIndexStack);
-
-                // Check if a new state was pushed
-                stateChanged = (stackSizeBefore != rStack.size());
+                pushNewStateIfValid(wordsTrie, board, currentState.currentWord, newR, newC,
+                                    currentState.visitMap, wordsFound, stateStack);
             }
         }
     }
