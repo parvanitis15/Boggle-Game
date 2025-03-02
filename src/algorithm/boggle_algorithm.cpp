@@ -165,9 +165,14 @@ std::vector<std::string> findValidWordsInBoardIterative(const Trie& wordsTrie, c
     // Define the 8 possible directions to traverse from any cell
     constexpr size_t nDirections = 8;
     constexpr std::array<std::array<int, 2>, nDirections> directionSteps = {
-        {{-1, -1}, {-1, 0}, {-1, 1},  // Above cells
-         {0, -1},           {0, 1},   // Adjacent cells
-         {1, -1},  {1, 0},  {1, 1}}   // Below cells
+        {{-1, -1},
+         {-1, 0},
+         {-1, 1}, // Above cells
+         {0, -1},
+         {0, 1}, // Adjacent cells
+         {1, -1},
+         {1, 0},
+         {1, 1}} // Below cells
     };
 
     // Iterate through each cell in the board as a starting position
@@ -180,7 +185,8 @@ std::vector<std::string> findValidWordsInBoardIterative(const Trie& wordsTrie, c
             // Skip invalid starting positions
             VisitMap initialVisitMap(board.rows, board.columns);
             std::string emptyWord{};
-            if (checkBoardIndex(wordsTrie, board, initialVisitMap, emptyWord, rInit, cInit, wordsFound)
+            if (checkBoardIndex(wordsTrie, board, initialVisitMap, emptyWord, rInit, cInit,
+                                wordsFound)
                 != ContinueTraversing::yes)
             {
                 continue;
@@ -188,9 +194,10 @@ std::vector<std::string> findValidWordsInBoardIterative(const Trie& wordsTrie, c
 
             // Mark initial position as visited
             initialVisitMap.markVisited(static_cast<size_t>(rInit), static_cast<size_t>(cInit));
-            
+
             // Initial letter for the current word
-            std::string initialLetter(1, board.getLetter(static_cast<size_t>(rInit), static_cast<size_t>(cInit)));
+            std::string initialLetter(
+                1, board.getLetter(static_cast<size_t>(rInit), static_cast<size_t>(cInit)));
 
             // Initialize stacks for DFS traversal
             std::stack<int> rStack;
@@ -217,13 +224,14 @@ std::vector<std::string> findValidWordsInBoardIterative(const Trie& wordsTrie, c
             while (!rStack.empty())
             {
                 // Validate stack consistency
-                assert(rStack.size() == cStack.size() &&
-                       rStack.size() == directionStepsIndexStack.size() &&
-                       rStack.size() == currentWordStack.size() &&
-                       rStack.size() == visitMapStack.size());
+                assert(rStack.size() == cStack.size()
+                       && rStack.size() == directionStepsIndexStack.size()
+                       && rStack.size() == currentWordStack.size()
+                       && rStack.size() == visitMapStack.size());
 
                 // Update current state if needed
-                if (stateChanged) {
+                if (stateChanged)
+                {
                     r = rStack.top();
                     c = cStack.top();
                     currentWord = currentWordStack.top();
@@ -253,7 +261,7 @@ std::vector<std::string> findValidWordsInBoardIterative(const Trie& wordsTrie, c
                 pushNewStateIfValid(wordsTrie, board, currentWord, newR, newC, visitMap, wordsFound,
                                     rStack, cStack, currentWordStack, visitMapStack,
                                     directionStepsIndexStack);
-                
+
                 // Check if a new state was pushed
                 stateChanged = (stackSizeBefore != rStack.size());
             }
