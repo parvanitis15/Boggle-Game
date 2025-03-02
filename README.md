@@ -36,20 +36,23 @@ The recursive implementation uses depth-first search with backtracking:
 - For each starting position, a recursive function explores all possible paths
 - Each recursive call represents moving to an adjacent cell
 - The recursion naturally handles the backtracking when a path doesn't lead to valid words
-- Parameters are passed by value to maintain separate state for each path
+- The algorithm marks cells as visited before exploring and unmarks them when backtracking
+- A shared `VisitMap` tracks visited cells for each starting position
 
 Benefits:
 - Clean, intuitive implementation
 - Efficient memory usage for the call stack
-- Typically faster performance
+- Typically faster for most board sizes
 
 #### Iterative Approach
 
-The iterative implementation uses explicit stacks to simulate recursion:
+The iterative implementation uses an explicit stack to simulate recursion:
 
-- Maintains stacks for row indices, column indices, current words, visited cells, and direction indices
-- Manually manages the state that would be handled by the call stack in the recursive approach
-- Uses a loop to process the stacks until they're empty
+- Uses a `SearchState` structure to track the current row, column, direction index, and word
+- Maintains a stack of these states to simulate the call stack
+- Systematically explores all 8 possible directions from each cell
+- Explicitly manages backtracking by incrementing the direction index and popping from the stack
+- Uses a shared `VisitMap` for efficient tracking of visited cells
 
 Benefits:
 - Avoids potential stack overflow for very large boards
@@ -58,7 +61,29 @@ Benefits:
 
 ### Performance Comparison
 
-Performance tests show that the recursive approach is generally faster than the iterative approach, typically by a factor of 2x. This is likely due to the overhead of managing multiple stacks in the iterative approach.
+Based on sample benchmark results for a 32x32 board with the extended word list:
+
+```
+Performance comparison:
+  Recursive mean time: 3960 microseconds
+  Iterative mean time: 4045 microseconds
+  Ratio (Recursive/Iterative): 0.98
+  Recursive algorithm is 2.10% faster
+```
+
+However, performance can vary significantly depending on:
+- Hardware specifications
+- Compiler and optimization settings
+- Operating system
+- Board size and word list complexity
+
+**Important**: You should run the benchmark on your own system to get accurate performance metrics. The benchmark scripts in the `benchmark` directory will automatically:
+- Build the project with optimizations enabled
+- Run multiple iterations to ensure statistical significance
+- Calculate the performance ratio between algorithms
+- Determine which algorithm performs better on your specific configuration
+
+The performance difference between recursive and iterative approaches is often small (as shown in the sample results above), but can vary based on your specific environment.
 
 ## Testing Framework
 
@@ -120,6 +145,63 @@ This project uses GitHub Actions for continuous integration and deployment:
 1. **CI Workflow**: Builds and tests the code on multiple platforms (Linux, macOS, Windows)
 2. **Code Quality**: Checks code formatting and performs static analysis
 3. **Release**: Creates releases with binaries for multiple platforms when a tag is pushed
+
+## Benchmarks
+
+The Boggle Solver includes a comprehensive benchmarking system to measure and compare the performance of different solving algorithms. The benchmarks help evaluate the efficiency of the recursive and iterative approaches on a large 32x32 board with an extended word list.
+
+### Running Benchmarks
+
+Benchmarks are located in the `benchmark` directory and can be run using the provided scripts:
+
+- **Linux/macOS**: Use `./benchmark/run_benchmark.sh`
+- **Windows**: Use `benchmark/run_benchmark.bat` (MSVC) or `benchmark/run_benchmark_mingw.bat` for MinGW
+
+These scripts will:
+1. Build the project in Release mode with optimizations enabled
+2. Run the benchmark tests
+3. Display detailed performance metrics
+
+### Benchmark Features
+
+The benchmarking system:
+
+- Measures execution time in microseconds using high-resolution clock
+- Runs multiple iterations (default: 10) to calculate mean execution time
+- Compares recursive vs. iterative algorithm performance
+- Calculates performance ratios and percentage differences
+- Verifies that both algorithms find the same number of valid words
+- Tests with a challenging 32x32 board and extended word list to stress-test the algorithms
+
+### Sample Benchmark Output
+
+```
+Running 10 iterations for Recursive algorithm on Huge Board (32x32) with Extended Word List...
+  Iteration 1: 12345 microseconds
+  Iteration 2: 12300 microseconds
+  ...
+
+Results for Recursive algorithm:
+  Board size: 32x32
+  Mean execution time: 12320 microseconds
+  Words found: 1234
+
+Performance comparison:
+  Recursive mean time: 12320 microseconds
+  Iterative mean time: 10240 microseconds
+  Ratio (Recursive/Iterative): 1.20
+  Iterative algorithm is 20% faster
+```
+
+### Customizing Benchmarks
+
+You can modify the benchmark parameters in `tests/test_boggle_benchmark.cpp` to:
+- Change the number of iterations
+- Adjust the board size
+- Use different word lists
+- Add new algorithm implementations
+
+For optimal results, always run benchmarks in Release mode to ensure compiler optimizations are applied.
 
 ## Creating a Release
 

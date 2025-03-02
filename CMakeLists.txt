@@ -14,6 +14,16 @@ if(MSVC)
         /EHsc   # Enable C++ exceptions
         /permissive-  # Enforce standards conformance
     )
+    
+    # Add optimization flags for Release builds
+    if(CMAKE_BUILD_TYPE STREQUAL "Release")
+        add_compile_options(
+            /O2     # Maximize speed
+            /Ob2    # Inline function expansion
+            /GL     # Whole program optimization
+            /DNDEBUG # Define NDEBUG macro
+        )
+    endif()
 else()
     # GCC/Clang compiler flags
     add_compile_options(
@@ -25,10 +35,25 @@ else()
         -Wsign-conversion
         -Werror
     )
+    
+    # Add optimization flags for Release builds
+    if(CMAKE_BUILD_TYPE STREQUAL "Release")
+        add_compile_options(
+            -O3        # Highest level of optimization
+            -DNDEBUG   # Define NDEBUG macro
+            -march=native # Optimize for the current CPU architecture
+        )
+    endif()
 endif()
 
-# Add debug symbols
-set(CMAKE_BUILD_TYPE Debug)
+# Set build type to Debug by default if not specified
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug)
+endif()
+
+# Print configuration information during build
+message(STATUS "Building in ${CMAKE_BUILD_TYPE} mode")
+message(STATUS "C++ compiler: ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
 
 # Enable testing
 enable_testing()
@@ -59,7 +84,17 @@ add_executable(boggle_tests
     src/algorithm/boggle_algorithm.cpp
 )
 
-# Add include directories for both targets
+# Create benchmark executable
+add_executable(boggle_benchmark
+    tests/test_boggle_benchmark.cpp
+    src/board/Board.cpp
+    src/trie/Node.cpp
+    src/trie/Trie.cpp
+    src/algorithm/VisitMap.cpp
+    src/algorithm/boggle_algorithm.cpp
+)
+
+# Add include directories for all targets
 target_include_directories(boggle_solver PRIVATE
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/src/board
@@ -78,8 +113,23 @@ target_include_directories(boggle_tests PRIVATE
     ${GTEST_INCLUDE_DIRS}
 )
 
-# Link Google Test to the test executable
-target_link_libraries(boggle_tests PRIVATE GTest::GTest GTest::Main)
+target_include_directories(boggle_benchmark PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/src/board
+    ${CMAKE_SOURCE_DIR}/src/trie
+    ${CMAKE_SOURCE_DIR}/src/algorithm
+    ${CMAKE_SOURCE_DIR}/src/verification
+    ${CMAKE_SOURCE_DIR}/tests
+    ${GTEST_INCLUDE_DIRS}
+)
 
-# Add the test to CTest
+# Link Google Test to the test executables
+target_link_libraries(boggle_tests PRIVATE GTest::GTest GTest::Main)
+target_link_libraries(boggle_benchmark PRIVATE GTest::GTest GTest::Main)
+
+# Add the tests to CTest
 add_test(NAME boggle_tests COMMAND boggle_tests)
+add_test(NAME boggle_benchmark COMMAND boggle_benchmark)
+
+# Print a message about running the benchmark
+message(STATUS "To run the benchmark in release mode, use the run_benchmark script")
