@@ -49,14 +49,11 @@ inTrie Trie::contains(const std::string_view& word) const
         return current_node_ptr->isValidWord() ? inTrie::isWord : inTrie::existsButNotWord;
     }
 
-    // Create a single string_view that we'll update as we go
-    std::string_view current_prefix;
-
     for (size_t i = 0; i < word.length(); ++i)
     {
         // Update our prefix to include the current character
         // This creates a new string_view but doesn't allocate memory
-        current_prefix = word.substr(0, i + 1);
+        std::string_view current_prefix = word.substr(0, i + 1);
 
         // Use the existing method to find the child with this prefix
         int childIndex = current_node_ptr->getIndexOfChildWithKey(current_prefix);
