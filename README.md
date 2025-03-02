@@ -41,8 +41,6 @@ The recursive implementation uses depth-first search with backtracking:
 
 Benefits:
 - Clean, intuitive implementation
-- Efficient memory usage for the call stack
-- Typically faster for most board sizes
 
 #### Iterative Approach
 
@@ -203,17 +201,5 @@ You can modify the benchmark parameters in `tests/test_boggle_benchmark.cpp` to:
 
 For optimal results, always run benchmarks in Release mode to ensure compiler optimizations are applied.
 
-## Creating a Release
-
-To create a new release:
-
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-```
-
-This will trigger the release workflow, which will build the project and upload the binaries to the GitHub release.
-
 ## License
-
-This project is licensed under the GNU General Public License v3.0 - see the [LICENSE.txt](LICENSE.txt) file for details. 
+This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
