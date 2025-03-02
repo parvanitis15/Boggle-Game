@@ -162,98 +162,100 @@ std::vector<std::string> findValidWordsInBoardIterative(const Trie& wordsTrie, c
 {
     std::vector<std::string> wordsFound{};
 
-    // Define the 8 possible directions to traverse from any cell:
-    // Above cells:      [-1, -1], [-1, 0], [-1, 1]
-    // Adjacent cells:   [0, -1],          [0, 1]
-    // Below cells:      [1, -1],  [1, 0],  [1, 1]
-    // Each pair represents [row_offset, column_offset]
+    // Define the 8 possible directions to traverse from any cell
     constexpr size_t nDirections = 8;
-    constexpr std::array<std::array<int, 2>, nDirections> directionSteps
-        = {{{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}}};
+    constexpr std::array<std::array<int, 2>, nDirections> directionSteps = {
+        {{-1, -1}, {-1, 0}, {-1, 1},  // Above cells
+         {0, -1},           {0, 1},   // Adjacent cells
+         {1, -1},  {1, 0},  {1, 1}}   // Below cells
+    };
 
+    // Iterate through each cell in the board as a starting position
     // Important: we're looping over the major dimension first for better memory caching of our
     // row-major structs
     for (int rInit{0}; rInit < static_cast<int>(board.rows); rInit++)
     {
         for (int cInit{0}; cInit < static_cast<int>(board.columns); cInit++)
         {
-            // Initialize visitMap for the starting position
+            // Skip invalid starting positions
             VisitMap initialVisitMap(board.rows, board.columns);
-
-            // Check if the first letter is valid using checkBoardIndex
             std::string emptyWord{};
-            if (checkBoardIndex(wordsTrie, board, initialVisitMap, emptyWord, rInit, cInit,
-                                wordsFound)
+            if (checkBoardIndex(wordsTrie, board, initialVisitMap, emptyWord, rInit, cInit, wordsFound)
                 != ContinueTraversing::yes)
             {
-                // Skip this starting position if it's not valid
                 continue;
             }
 
             // Mark initial position as visited
             initialVisitMap.markVisited(static_cast<size_t>(rInit), static_cast<size_t>(cInit));
+            
+            // Initial letter for the current word
+            std::string initialLetter(1, board.getLetter(static_cast<size_t>(rInit), static_cast<size_t>(cInit)));
 
-            // Row, column stacks
+            // Initialize stacks for DFS traversal
             std::stack<int> rStack;
             std::stack<int> cStack;
-
-            // Direction steps index stack (keep track of directions still left to explore by
-            // incrementing the index)
             std::stack<size_t> directionStepsIndexStack;
-
-            // Current word stack
             std::stack<std::string> currentWordStack;
-
-            // VisitMap stack
             std::stack<VisitMap> visitMapStack;
 
-            // Initialize stacks with starting position
+            // Push initial state
             rStack.push(rInit);
             cStack.push(cInit);
-            directionStepsIndexStack.emplace(0);
-            currentWordStack.emplace(std::string(
-                1, board.getLetter(static_cast<size_t>(rInit), static_cast<size_t>(cInit))));
-            visitMapStack.emplace(initialVisitMap);
+            directionStepsIndexStack.push(0);
+            currentWordStack.push(initialLetter);
+            visitMapStack.push(initialVisitMap);
 
-            // While the stacks are not empty
-            while (
-                not rStack
-                        .empty()) // all stacks should have same number of items (see assert below)
+            // Current state variables (avoid repeated stack access)
+            int r = rInit;
+            int c = cInit;
+            std::string currentWord = initialLetter;
+            VisitMap visitMap = initialVisitMap;
+            bool stateChanged = false;
+
+            // DFS traversal
+            while (!rStack.empty())
             {
-                // Do some asserts here for debug purposes (will be optimized away at Release)
-                assert(rStack.size() == cStack.size()
-                       && rStack.size() == directionStepsIndexStack.size()
-                       && rStack.size() == currentWordStack.size()
-                       && rStack.size() == visitMapStack.size());
+                // Validate stack consistency
+                assert(rStack.size() == cStack.size() &&
+                       rStack.size() == directionStepsIndexStack.size() &&
+                       rStack.size() == currentWordStack.size() &&
+                       rStack.size() == visitMapStack.size());
 
+                // Update current state if needed
+                if (stateChanged) {
+                    r = rStack.top();
+                    c = cStack.top();
+                    currentWord = currentWordStack.top();
+                    visitMap = visitMapStack.top();
+                    stateChanged = false;
+                }
+
+                // If all directions from current cell are explored, backtrack
                 if (directionStepsIndexStack.top() >= nDirections)
                 {
-                    // If we are out of directions to traverse, pop stacks and continue
                     rStack.pop();
                     cStack.pop();
                     directionStepsIndexStack.pop();
                     currentWordStack.pop();
                     visitMapStack.pop();
+                    stateChanged = true;
                     continue;
                 }
 
-                // Assign values for this iteration
-                auto r{rStack.top()};
-                auto c{cStack.top()};
-                auto currentWord{currentWordStack.top()};
-                auto visitMap{visitMapStack.top()};
+                // Get next direction to explore
+                size_t dirIndex = directionStepsIndexStack.top()++;
+                int newR = r + directionSteps[dirIndex][0];
+                int newC = c + directionSteps[dirIndex][1];
 
-                // Traverse
-                int newR = r + directionSteps[directionStepsIndexStack.top()][0];
-                int newC = c + directionSteps[directionStepsIndexStack.top()][1];
-
-                // Increment the direction index to traverse next
-                directionStepsIndexStack.top() += 1;
-
-                // Check new position and push state if valid
+                // Try to move in the current direction
+                size_t stackSizeBefore = rStack.size();
                 pushNewStateIfValid(wordsTrie, board, currentWord, newR, newC, visitMap, wordsFound,
                                     rStack, cStack, currentWordStack, visitMapStack,
                                     directionStepsIndexStack);
+                
+                // Check if a new state was pushed
+                stateChanged = (stackSizeBefore != rStack.size());
             }
         }
     }
